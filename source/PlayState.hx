@@ -2182,6 +2182,7 @@ class PlayState extends MusicBeatState
 					case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240/fps;
 					case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240/fps;
 				}
+			}
 		}
 	}
 
