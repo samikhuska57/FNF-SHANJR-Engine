@@ -3663,3 +3663,4 @@ class HScript
 	}
 }
 #end
+// hi guys, my name is "secret"!
