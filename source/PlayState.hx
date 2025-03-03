@@ -2174,19 +2174,21 @@ class PlayState extends MusicBeatState
 			//FlxG.elapsed is stinky poo poo for this, it just makes it look jank as fuck
 			if (doPan) {
 				if (fps == 0) fps = 1;
-				switch (anim.split('-')[0])
-				{
-					if (StageData.camera_speed = 0) {
-						case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240*playbackRate;
-						case 'singDOWN': moveCamTo[1] = 40*ClientPrefs.panIntensity*240*playbackRate;
-						case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240*playbackRate;
-						case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240*playbackRate;
-					}
-					else {
-						case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
-						case 'singDOWN': moveCamTo[1] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
-						case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
-						case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
+					switch (anim.split('-')[0])
+					{
+						if (StageData.camera_speed < 0) 
+						{
+							case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240/fps;
+							case 'singDOWN': moveCamTo[1] = 40*ClientPrefs.panIntensity*240/fps;
+							case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240/fps;
+							case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240/fps;
+						}
+						else {
+							case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
+							case 'singDOWN': moveCamTo[1] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
+							case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
+							case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
+						}
 					}
 				}
 			}
