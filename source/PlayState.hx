@@ -2176,10 +2176,18 @@ class PlayState extends MusicBeatState
 				if (fps == 0) fps = 1;
 				switch (anim.split('-')[0])
 				{
-					case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
-					case 'singDOWN': moveCamTo[1] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
-					case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
-					case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
+					if (StageData.camera_speed = 0) {
+						case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240*playbackRate;
+						case 'singDOWN': moveCamTo[1] = 40*ClientPrefs.panIntensity*240*playbackRate;
+						case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240*playbackRate;
+						case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240*playbackRate;
+					}
+					else {
+						case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
+						case 'singDOWN': moveCamTo[1] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
+						case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
+						case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
+					}
 				}
 			}
 		}
