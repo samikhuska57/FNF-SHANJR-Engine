@@ -2174,6 +2174,7 @@ class PlayState extends MusicBeatState
 			//FlxG.elapsed is stinky poo poo for this, it just makes it look jank as fuck
 			if (doPan && cameraSpeed > 0) {
 				if (fps == 0) fps = 1;
+
 				switch (anim.split('-')[0])
 				{
 					case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
@@ -2181,7 +2182,6 @@ class PlayState extends MusicBeatState
 					case 'singLEFT': moveCamTo[0] = -40*ClientPrefs.panIntensity*240*playbackRate/fps;
 					case 'singRIGHT': moveCamTo[0] = 40*ClientPrefs.panIntensity*240*playbackRate/fps;
 				}
-			}
 		}
 	}
 
