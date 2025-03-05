@@ -3995,10 +3995,10 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function camZoom()
+	function doZoomTween():Void
 	{
-		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay * playbackRate), {ease: FlxEase.quadOut});
-		FlxTween.tween(camHUD.zoom, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay * playbackRate), {ease: FlxEase.quadOut});
+		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay / playbackRate), {ease: FlxEase.quadOut});
+		FlxTween.tween(camHUD.zoom, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay / playbackRate), {ease: FlxEase.quadOut});
 	}
 
 	function openPauseMenu()
@@ -4311,7 +4311,7 @@ class PlayState extends MusicBeatState
 					if(Math.isNaN(hudZoom)) hudZoom = 0.03;
 					FlxG.camera.zoom += camZoom;
 					camHUD.zoom += hudZoom;
-					camZoom();
+					doZoomTween();
 				}
 
 			case 'Play Animation':
@@ -6275,7 +6275,7 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.camera.zoom += 0.015 * camBopIntensity;
 			camHUD.zoom += 0.03 * camBopIntensity;
-			camZoom();
+			doZoomTween();
 		} /// WOOO YOU CAN NOW MAKE IT AWESOME
 
 		if (camTwist && curBeat % gfSpeed == 0)
@@ -6353,7 +6353,7 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.camera.zoom += 0.015 * camBopIntensity;
 				camHUD.zoom += 0.03 * camBopIntensity;
-				camZoom();
+				doZoomTween();
 			}
 		}
 
