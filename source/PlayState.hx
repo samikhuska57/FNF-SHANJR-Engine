@@ -3997,9 +3997,7 @@ class PlayState extends MusicBeatState
 
 	function camZoom()
 	{
-		FlxG.camera.zoom = (defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate)));
 		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay * playbackRate), {ease: FlxEase.quadOut});
-		camHUD.zoom = (1, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate)));
 		FlxTween.tween(camHUD.zoom, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay * playbackRate), {ease: FlxEase.quadOut});
 	}
 
