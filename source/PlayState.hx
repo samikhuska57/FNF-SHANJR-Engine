@@ -3997,8 +3997,8 @@ class PlayState extends MusicBeatState
 
 	function camZoom():Void
 	{
-		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay * playbackRate), {ease: FlxEase.quadOut});
-		FlxTween.tween(camHUD.zoom, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay * playbackRate), {ease: FlxEase.quadOut});
+		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay / playbackRate), {ease: FlxEase.quadOut});
+		FlxTween.tween(camHUD.zoom, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay / playbackRate), {ease: FlxEase.quadOut});
 	}
 
 	function openPauseMenu()
