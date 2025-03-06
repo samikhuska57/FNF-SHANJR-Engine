@@ -16,7 +16,7 @@ import flixel.FlxState;
 import flixel.FlxCamera;
 import flixel.FlxBasic;
 import backend.PsychCamera;
-import openfl.Util;
+import openfl.utils.Assets;
 
 class MusicBeatState extends FlxUIState
 {
