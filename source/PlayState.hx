@@ -168,7 +168,7 @@ class PlayState extends MusicBeatState
 
 	public var camZooming:Bool = false;
 	public var camZoomingMult:Float = 1;
-	public var camZoomingDecay:Float = 0.75;
+	public var camZoomingDecay:Float = 1;
 	private var curSong:String = "";
 
 	public var gfSpeed:Int = 1;
@@ -2174,7 +2174,6 @@ class PlayState extends MusicBeatState
 			//FlxG.elapsed is stinky poo poo for this, it just makes it look jank as fuck
 			if (doPan && cameraSpeed > 0) {
 				if (fps == 0) fps = 1;
-
 				switch (anim.split('-')[0])
 				{
 					case 'singUP': moveCamTo[1] = -40*ClientPrefs.panIntensity*240/fps;
@@ -3149,21 +3148,6 @@ class PlayState extends MusicBeatState
 
 			strumLineNotes.add(babyArrow);
 			babyArrow.postAddedToGroup();
-			/*
-			if (ClientPrefs.noteColorStyle != 'Normal' !PlayState.isPixelStage) 
-			{
-				var arrowAngle = switch(i)
-				{
-					case 0: 180;
-					case 1: 90;
-					case 2: 270;
-					default: 0;
-				}
-				babyArrow.noteData = 3;
-				babyArrow.angle += arrowAngle;
-				babyArrow.reloadNote();
-			}
-			*/
 		}
 		strumLine.put();
 	}
@@ -3780,6 +3764,12 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (camZooming)
+		{
+			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate), 0, 1));
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * camZoomingDecay * playbackRate), 0, 1));
+		}
+
 		// RESET = Quick Game Over Screen
 		if (!ClientPrefs.noReset && controls.RESET && canReset && !inCutscene && startedCountdown && !endingSong && !heyStopTrying)
 		{
@@ -3993,12 +3983,6 @@ class PlayState extends MusicBeatState
 			iconP1.x = center + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
 			iconP2.x = center - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
 		}
-	}
-
-	function doZoomTween():Void
-	{
-		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay / playbackRate), {ease: FlxEase.quadOut});
-		FlxTween.tween(camHUD, {zoom: defaultCamZoom}, (Conductor.crochet / 1200 * camZoomingDecay / playbackRate), {ease: FlxEase.quadOut});
 	}
 
 	function openPauseMenu()
@@ -4309,9 +4293,9 @@ class PlayState extends MusicBeatState
 					var hudZoom:Float = Std.parseFloat(value2);
 					if(Math.isNaN(camZoom)) camZoom = 0.015;
 					if(Math.isNaN(hudZoom)) hudZoom = 0.03;
+
 					FlxG.camera.zoom += camZoom;
 					camHUD.zoom += hudZoom;
-					doZoomTween();
 				}
 
 			case 'Play Animation':
@@ -6259,6 +6243,7 @@ class PlayState extends MusicBeatState
 				timeTxtTween.cancel();
 			}
 			timeTxt.scale.x = 1.075;
+			timeTxt.scale.y = 1.075;
 			timeTxtTween = FlxTween.tween(timeTxt.scale, {x: 1, y: 1}, 0.2, {
 				onComplete: function(twn:FlxTween) {
 					timeTxtTween = null;
@@ -6275,7 +6260,6 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.camera.zoom += 0.015 * camBopIntensity;
 			camHUD.zoom += 0.03 * camBopIntensity;
-			doZoomTween();
 		} /// WOOO YOU CAN NOW MAKE IT AWESOME
 
 		if (camTwist && curBeat % gfSpeed == 0)
@@ -6353,7 +6337,6 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.camera.zoom += 0.015 * camBopIntensity;
 				camHUD.zoom += 0.03 * camBopIntensity;
-				doZoomTween();
 			}
 		}
 
