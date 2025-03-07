@@ -6230,6 +6230,7 @@ class PlayState extends MusicBeatState
 	}
 
 	var lastBeatHit:Int = -1;
+	var twisted = false;
 
 	override function beatHit()
 	{
@@ -6264,18 +6265,7 @@ class PlayState extends MusicBeatState
 
 		if (camTwist && curBeat % gfSpeed == 0)
 		{
-			if (curBeat % (gfSpeed * 2) == 0)
-				twistShit = twistAmount * camTwistIntensity;
-
-			if (curBeat % (gfSpeed * 2) == gfSpeed)
-				twistShit = -twistAmount * camTwistIntensity2;
-				
-			for (i in [camHUD, camGame])
-			{
-				FlxTween.cancelTweensOf(i);
-				i.angle = twistShit;
-				FlxTween.tween(i, {angle: 0}, 45 / Conductor.bpm * gfSpeed / playbackRate, {ease: FlxEase.circOut});
-			}
+			doTwist();
 		}
 
 		if (ClientPrefs.iconBopWhen == 'Every Beat' && (iconP1.visible || iconP2.visible)) 
@@ -6303,6 +6293,19 @@ class PlayState extends MusicBeatState
 		var anim:String = char.getAnimationName();
 		if(char.holdTimer > Conductor.stepCrochet * (0.0011 #if FLX_PITCH / FlxG.sound.music.pitch #end) * char.singDuration * singDurMult && anim.startsWith('sing') && !anim.endsWith('miss'))
 			char.dance();
+	}
+
+	public function doTwist()
+	{
+		twistShit = twistAmount * camTwistIntensity * (!twisted ? 1 : -1);
+		twisted = !twisted;
+			
+		for (i in [camHUD, camGame])
+		{
+			FlxTween.cancelTweensOf(i);
+			i.angle = twistShit;
+			FlxTween.tween(i, {angle: 0}, 45 / Conductor.bpm * gfSpeed / playbackRate, {ease: FlxEase.circOut});
+		}
 	}
 
 	var usingBopIntervalEvent = false;
