@@ -17,6 +17,7 @@ on:
       buildFlags:
         required: false
         type: string
+        default: 'commit' # defaults to Commit, changes to officialBuild on release builds
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -61,7 +62,7 @@ jobs:
           haxe compile.hxml
           cd ../..
       - name: Compile
-        run: haxelib run lime build linux -D commit -D ${{ inputs.buildFlags }}
+        run: haxelib run lime build linux -D ${{ inputs.buildFlags }}
       - name: Clear Previous Cache
         uses: actions/github-script@main
         with:
