@@ -254,7 +254,7 @@ class ChartingState extends MusicBeatState
 	public var hitsoundVol:Float = 1;
 
 	var autoSaveTimer:FlxTimer;
-	public var autoSaveLength:Float = 90; // 2 minutes
+	public var autoSaveLength:Float = 90; // 2 minutes // THAT'S NOT 2 MINUTES
 	override function create()
 	{
 		idleMusic = new EditingMusic();
@@ -521,7 +521,7 @@ class ChartingState extends MusicBeatState
 					});
 				}
 			});
-			autosaveSong();
+			saveLevel(true, true);
 		}, 0);
 
 		addSongUI();
@@ -682,12 +682,12 @@ class ChartingState extends MusicBeatState
 		{
 			saveLevel(true);
 		});
-		var autosaveButton:FlxButton = new FlxButton(saveEvents.x, reloadSongJson.y + 60, "Save to Autosave", function()
+		var autosaveButton:FlxButton = new FlxButton(saveEvents.x, reloadSongJson.y + 60, "Save to Backups", function()
 		{
 			if (autoSaveTimer != null)
 				autoSaveTimer.reset(autoSaveLength);
 
-			autosaveSong();
+			saveLevel(true, true);
 		});
 
 		var clear_events:FlxButton = new FlxButton(320, 310, 'Clear events', function()
@@ -2668,7 +2668,7 @@ class ChartingState extends MusicBeatState
 		{
 			if (FlxG.keys.justPressed.ESCAPE)
 			{
-				autosaveSong();
+				saveLevel(true, true);
 				FlxG.sound.music.pause();
 				pauseVocals();
 				LoadingState.loadAndSwitchState(() -> new editors.EditorPlayState(sectionStartTime()));
@@ -2677,7 +2677,7 @@ class ChartingState extends MusicBeatState
 			}
 			if (FlxG.keys.justPressed.ENTER)
 			{
-				if (CoolUtil.getNoteAmount(_song) <= 1000000) autosaveSong();
+				if (CoolUtil.getNoteAmount(_song) <= 1000000) saveLevel(true, true);
 				FlxG.mouse.visible = false;
 				PlayState.SONG = _song;
 				FlxG.sound.music.stop();
@@ -2708,7 +2708,7 @@ class ChartingState extends MusicBeatState
 				if (!unsavedChanges)
 				{
 					// Protect against lost data when quickly leaving the chart editor.
-					autosaveSong();
+					saveLevel(true, true);
 
 					CoolUtil.currentDifficulty = difficulty;
 					PlayState.chartingMode = false;
@@ -4012,7 +4012,7 @@ class ChartingState extends MusicBeatState
 				curRenderedNotes.remove(note, true);
 				note.destroy();
 
-		if (!unsavedChanges) unsavedChanges = true;
+		unsavedChanges = true;
 	}
 
 	public function doANoteThing(cs, d, style){
@@ -4043,7 +4043,7 @@ class ChartingState extends MusicBeatState
 			_song.notes[daSection].sectionNotes = [];
 		}
 
-		if (!unsavedChanges) unsavedChanges = true;
+		unsavedChanges = true;
 		updateGrid();
 	}
 
@@ -4128,7 +4128,7 @@ class ChartingState extends MusicBeatState
 				}
 			updateNoteUI();
 		}
-		if (!unsavedChanges) unsavedChanges = true;
+		unsavedChanges = true;
 	}
 
 	// will figure this out l8r
@@ -4179,7 +4179,7 @@ class ChartingState extends MusicBeatState
 			redos.unshift(undos[0]);
 			undos.splice(0, 1);
 			trace("Performed an Undo! Undos remaining: " + undos.length);
-			if (!unsavedChanges) unsavedChanges = true;
+			unsavedChanges = true;
 			if (curSection > _song.notes.length) changeSection(_song.notes.length-1);
 			updateGrid();
 		}
@@ -4218,29 +4218,14 @@ class ChartingState extends MusicBeatState
 			songJsonPopup(); //HAH, IT AINT CRASHING NOW
 		}
 	}
-	
-	public function autosaveSong():Void
-	{
-		FlxG.save.data.autosave = Json.stringify({
-			"song": _song
-		});
-		trace('Chart saved!');
-		FlxTween.tween(autosaveIndicator, {alpha: 1}, 1, {ease: FlxEase.backInOut, type: ONESHOT});
-		
-		new FlxTimer().start(3, function(tmr:FlxTimer) {
-			FlxTween.tween(autosaveIndicator, {alpha: 0}, 1, {ease: FlxEase.backInOut, type: ONESHOT});
-		});
-		FlxG.save.flush();
-		if (unsavedChanges) unsavedChanges = false;
-	}
 
 	function clearEvents() {
 		_song.events = [];
-		if (!unsavedChanges) unsavedChanges = true;
+		unsavedChanges = true;
 		updateGrid();
 	}
 
-	private function saveLevel(?compressed:Bool = false)
+	private function saveLevel(?compressed:Bool = false, ?isAuto:Bool = false)
 	{
 		Paths.gc(true);
 		if (CoolUtil.getNoteAmount(_song) > 1000000) 
@@ -4257,21 +4242,36 @@ class ChartingState extends MusicBeatState
 
 		if ((data != null) && (data.length > 0))
 		{
-			_file = new FileReference();
-			_file.addEventListener(Event.COMPLETE, onSaveComplete);
-			_file.addEventListener(Event.CANCEL, onSaveCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			var gamingName:String = Paths.formatToSongPath(_song.song);
 
 			if (difficulty.toLowerCase() != 'normal')
 				gamingName = gamingName + '-' + Paths.formatToSongPath(difficulty);
 
-			_file.save(data.trim(), gamingName + ".json");
+			if (!isAuto) {
+				_file = new FileReference();
+				_file.addEventListener(Event.COMPLETE, onSaveComplete);
+				_file.addEventListener(Event.CANCEL, onSaveCancel);
+				_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+
+				_file.save(data.trim(), gamingName + ".json");
+			} else {
+				// better save system!
+				if (!FileSystem.exists('backups/')) {
+					FileSystem.createDirectory("backups/");
+					File.saveContent('backups/README.txt', "This is where your backups are stored.\nIf your engine freezes/crashes and you didn't save it, you will be happy that the backups are now stored in there instead of the single autosave so you can restore it whenever you want!");
+				}
+
+				var dateNow:String = Date.now().toString();
+				dateNow = dateNow.replace(" ", "_");
+				dateNow = dateNow.replace(":", "'");
+
+				File.saveContent('backups/${gamingName}_$dateNow.json', data.trim());
+			}
 		}
-			cpp.vm.Gc.enable(true);
-		if (unsavedChanges) unsavedChanges = false;
-		if (autoSaveTimer != null)
-			autoSaveTimer.reset(autoSaveLength);
+		
+		cpp.vm.Gc.enable(true);
+		unsavedChanges = false;
+		if (autoSaveTimer != null) autoSaveTimer.reset(autoSaveLength);
 	}
 
 	function sortByTime(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int

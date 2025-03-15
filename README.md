@@ -42,6 +42,7 @@ This contains lots and lots of customizable and features built in to JS Engine, 
 - Built in Song Credits! (on chart editor)
 - Spam modules! (for the DnB fans)
 - Cool customizable UI!
+- Multiple Chart Backups!
 
 There is like lots and lots of stuff i've missed, but at least you would like those features built in **JS ENGINE**
 
