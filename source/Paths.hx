@@ -97,7 +97,7 @@ class Paths
 		// Use a for loop for adding all of the animations in the note spritesheet, otherwise it won't find the animations for the next recycle
 		for (d in 0...keys)
 		{
-			spr.animation.addByPrefix('purpleholdend', 'pruple end hold'); // ?????
+			if (d == 0) spr.animation.addByPrefix('purpleholdend', 'pruple end hold'); // ?????
 			spr.animation.addByPrefix(Note.colArray[d] + 'holdend', Note.colArray[d] + ' hold end');
 			spr.animation.addByPrefix(Note.colArray[d] + 'hold', Note.colArray[d] + ' hold piece');
 			spr.animation.addByPrefix(Note.colArray[d] + 'Scroll', Note.colArray[d] + '0');

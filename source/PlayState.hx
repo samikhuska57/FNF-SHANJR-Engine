@@ -690,9 +690,6 @@ class PlayState extends MusicBeatState
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
-		startCallback = startCountdown;
-		endCallback = endSong;
-
 		switch (curStage)
 		{
 			case 'stage': new stages.StageWeek1(); //Week 1
@@ -1580,6 +1577,9 @@ class PlayState extends MusicBeatState
 			}
 		}
 		#end
+		
+		startCallback = startCountdown;
+		endCallback = endSong;
 
 		startCallback();
 		RecalculateRating();
