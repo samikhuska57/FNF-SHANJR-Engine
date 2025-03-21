@@ -173,7 +173,7 @@ class Note extends FlxSprite
 		if (!pixelNote && texture != value)
 		{
 			changeSize = false;
-			if (!Paths.noteSkinFramesMap.exists(value)) Paths.initNote(4, value);
+			if (!Paths.noteSkinFramesMap.exists(value)) Paths.initNote(value);
 			if (frames != @:privateAccess Paths.noteSkinFramesMap.get(value)) frames = @:privateAccess Paths.noteSkinFramesMap.get(value);
 			if (animation != @:privateAccess Paths.noteSkinAnimsMap.get(value)) animation.copyFrom(@:privateAccess Paths.noteSkinAnimsMap.get(value));
 

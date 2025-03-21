@@ -711,7 +711,7 @@ class PlayState extends MusicBeatState
 
 		if (Note.globalRgbShaders.length > 0) Note.globalRgbShaders = [];
 		Paths.initDefaultSkin(SONG.arrowSkin);
-		Paths.initNote(4, SONG.arrowSkin);
+		Paths.initNote(SONG.arrowSkin);
 
 		if(isPixelStage) {
 			introSoundsSuffix = '-pixel';
@@ -880,7 +880,6 @@ class PlayState extends MusicBeatState
 			if(gf != null)
 				gf.visible = false;
 		}
-		callOnLuas('onCreate');
 
 		var file:String = Paths.json(songName + '/dialogue'); //Checks for json/Psych Engine dialogue
 		if (OpenFlAssets.exists(file)) {
@@ -1177,6 +1176,8 @@ class PlayState extends MusicBeatState
 
 		trace ('Loading chart...');
 		generateSong(SONG.song, startOnTime);
+
+		callOnLuas('onCreate');
 
 		if (SONG.event7 == null || SONG.event7 == '') SONG.event7 == 'None';
 
@@ -2894,7 +2895,7 @@ class PlayState extends MusicBeatState
 						noteDensity: currentMultiplier,
 						ignoreNote: songNotes[3] == 'Hurt Note' && gottaHitNote
 					};
-					if (swagNote.noteskin.length > 0 && !Paths.noteSkinFramesMap.exists(swagNote.noteskin)) inline Paths.initNote(4, swagNote.noteskin);
+					if (swagNote.noteskin.length > 0 && !Paths.noteSkinFramesMap.exists(swagNote.noteskin)) inline Paths.initNote(swagNote.noteskin);
 
 					if(!Std.isOfType(songNotes[3], String)) swagNote.noteType = ChartingState.noteTypeList[songNotes[3]]; //Backward compatibility + compatibility with Week 7 charts
 
