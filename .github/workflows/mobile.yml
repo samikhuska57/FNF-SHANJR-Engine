@@ -54,7 +54,9 @@ jobs:
 
       - name: Compile hxcpp
         run: |
-          cd ~/Users/runner/hostedtoolcache/haxe/4.3.6/arm64/lib/hxcpp/git/tools/run
+          HxcppPath=$(haxelib libpath hxcpp | tr -d '\r')
+          echo "Using HxcppPath: $HxcppPath"
+          cd $HxcppPath/tools/run
           haxe compile.hxml
           cd ..
           cd ./hxcpp
