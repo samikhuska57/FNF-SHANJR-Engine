@@ -4255,6 +4255,17 @@ class ChartingState extends MusicBeatState
 
 				_file.save(data.trim(), gamingName + ".json");
 			} else {
+				// Get and sort backup files by modification time (oldest first)
+				var backups = FileSystem.readDirectory("backups/")
+					.filter(f -> f.endsWith(".json"))
+					.map(f -> "backups/" + f)
+					.filter(FileSystem.isFile)
+					.sort((a, b) -> Reflect.compare(FileSystem.stat(a).mtime, FileSystem.stat(b).mtime));
+
+				// Remove oldest backups if limit exceeded
+				while (backups.length >= 3)
+					FileSystem.deleteFile(backups.shift());
+
 				// better save system!
 				if (!FileSystem.exists('backups/')) {
 					FileSystem.createDirectory("backups/");
