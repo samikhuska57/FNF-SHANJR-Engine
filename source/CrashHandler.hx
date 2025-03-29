@@ -8,6 +8,7 @@ import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.FlxState;
 import flixel.FlxG;
+import flixel.addons.transition.FlxTransitionableState;
 import openfl.events.UncaughtErrorEvent;
 import openfl.events.ErrorEvent;
 import openfl.errors.Error;
@@ -86,6 +87,9 @@ class CrashHandler {
 			Sys.println("Crash dump saved in " + Path.normalize(path));
 		} catch(e:Dynamic) trace(e);
 
+		FlxTransitionableState.skipNextTransIn = true;
+		FlxTransitionableState.skipNextTransOut = false;
+
 		if (ClientPrefs.peOGCrash) {
 			errorMessage += "\n\nPlease report this error to the GitHub page: https://github.com/JordanSantiagoYT/FNF-JS-Engine"
 			+ "\nThe engine has saved a crash log inside the crash folder, If you're making a GitHub issue you might want to send that!";
@@ -125,7 +129,7 @@ class Crash extends FlxState {
 		ohNo3.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
 		ohNo3.alpha = 0;
 		ohNo3.screenCenter();
-		ohNo3.y = 590;
+		ohNo3.y = 580;
 		ohNo3.x = 30;
 		add(ohNo3);
 
@@ -133,7 +137,7 @@ class Crash extends FlxState {
 		ohNo4.setFormat(Paths.font('vcr.ttf'), 22, FlxColor.WHITE, FlxTextAlign.CENTER);
 		ohNo4.alpha = 0;
 		ohNo4.screenCenter();
-		ohNo4.y = 630;
+		ohNo4.y = 620;
 		add(ohNo4);
 
 		var stripClub:Array<String> = CrashHandler.errorMessage.split("\n");
@@ -155,7 +159,7 @@ class Crash extends FlxState {
 		tip.setFormat(Paths.font('vcr.ttf'), 36, FlxColor.WHITE, FlxTextAlign.CENTER);
 		tip.alpha = 0;
 		tip.screenCenter();
-		tip.y = 677;
+		tip.y = 670;
 		add(tip);
 
 		FlxTween.tween(ohNo, {alpha: 1}, 0.5);
@@ -165,12 +169,21 @@ class Crash extends FlxState {
 		FlxTween.tween(tip, {alpha: 1}, 0.5);
 		for (spr in crash) FlxTween.tween(spr, {alpha: 1}, 0.5);
 
+		var error:FlxSound = FlxG.sound.load(Paths.sound('error'));
+		error.play();
+
 		super.create();
 	}
 
+	// Do note that if you use "resetGame" js engine will be in a crash loop because music is missing.
+	// Even with my coding skills and trying to make it work it just doesn't, i'm probably stupid.
+	// Also yes i tried FlxG.sound.playMusic and yet it doesn't do what it's suppose to do.
+	// -nael2xd
 	var countDown:Int = 10;
 	var clicked:Bool = false;
 	override public function update(elapsed:Float) if (FlxG.keys.justPressed.ANY && !clicked) {
+		FlxTransitionableState.skipNextTransIn = false;
+
 		if (FlxG.keys.justPressed.ENTER) {
 			clicked = true;
 			for (sprite in members) if (sprite is FlxSprite || sprite is FlxText) FlxTween.tween(sprite, {alpha: 0.5}, 0.5);
