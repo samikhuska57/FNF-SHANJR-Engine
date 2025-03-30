@@ -125,7 +125,7 @@ class Crash extends FlxState {
 		ohNo2.y = 64;
 		add(ohNo2);
 
-		var ohNo3:FlxText = new FlxText(0, 0, 1280, "Crash Handler by YoshiCrafter29, Ne_Eo. MAJigsaw77 and mcagabe19\nCrash UI State by Nael2xd");
+		var ohNo3:FlxText = new FlxText(0, 0, 1280, "Crash Handler by YoshiCrafter29, Ne_Eo. MAJigsaw77 and HomuHomu833\nCrash UI State by Nael2xd");
 		ohNo3.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
 		ohNo3.alpha = 0;
 		ohNo3.screenCenter();
