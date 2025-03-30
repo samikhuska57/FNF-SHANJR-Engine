@@ -575,6 +575,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		#end
 
+		var option:Option = new Option('Use Psych Engine\'s Crash Window',
+			"If checked, it will use the Original Psych Engine's Crash Window instead of the UI Type.",
+			'peOGCrash',
+			'bool',
+			false);
+		addOption(option);
+
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length-1]];
 
 		super();

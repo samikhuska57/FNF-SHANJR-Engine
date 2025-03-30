@@ -43,6 +43,7 @@ This contains lots and lots of customizable and features built in to JS Engine, 
 - Spam modules! (for the DnB fans)
 - Cool customizable UI!
 - Multiple Chart Backups!
+- Custom Crash UI (Instead of Regular Psych Engine Crash)!
 
 There is like lots and lots of stuff i've missed, but at least you would like those features built in **JS ENGINE**
 
