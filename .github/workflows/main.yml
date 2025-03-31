@@ -115,7 +115,12 @@ jobs:
         with:
           haxe-version: 4.3.6
       - name: Testing
-        run: echo "Build flags:${{ inputs.buildFlags }}"
+        run: |
+          if [ -z "${{ inputs.buildFlags }}" ]; then
+            echo "Input is empty or unset"
+          else
+            echo "Input has value: '${{ inputs.buildFlags }}'"
+          fi
       - name: Restore Previous Cache
         id: cache-build-windows-restore
         uses: actions/cache/restore@main
