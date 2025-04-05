@@ -22,7 +22,7 @@ using StringTools;
 
 /**
  * Crash Handler.
- * @author YoshiCrafter29, Ne_Eo. MAJigsaw77 and mcagabe19
+ * @author YoshiCrafter29, Ne_Eo. MAJigsaw77 and HomuHomu833
 */
 
 class CrashHandler {
@@ -103,7 +103,7 @@ class CrashHandler {
     private static function onError(message:Dynamic):Void throw Std.string(message);
 }
 
-class Crash extends FlxState {
+class Crash extends MusicBeatState {
 	override public function create() {
 		if (FlxG.sound.music != null) FlxG.sound.music.stop();
 
