@@ -342,27 +342,17 @@ class Character extends FlxSprite
 				if(isAnimationFinished()) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 		}
 
-		if (!isPlayer)
-		{
-			if (!PlayState.opponentChart || curCharacter.startsWith('gf')) {
-				if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
+		if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
+		else if(isPlayer) holdTimer = 0;
 
-				if (holdTimer >= Conductor.stepCrochet * (0.0011 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1)) * singDuration * (PlayState.instance != null ? PlayState.instance.singDurMult : 1))
-				{
-					dance();
-					holdTimer = 0;
-				}
-			} else {
-				if (getAnimationName().startsWith('sing'))
-				{
-					holdTimer += elapsed;
-				}
-				else
-					holdTimer = 0;
-
-				if (getAnimationName().endsWith('miss') && isAnimationFinished() && !debugMode)
-					dance();
+		try {
+			if (!isPlayer && holdTimer >= Conductor.stepCrochet * (0.0011 #if FLX_PITCH / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1) #end) * singDuration * PlayState.instance.singDurMult)
+			{
+				dance();
+				holdTimer = 0;
 			}
+		} catch (e) {
+			dance(); holdTimer = 0;
 		}
 
 		anim = getAnimationName();
