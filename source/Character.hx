@@ -292,6 +292,7 @@ class Character extends FlxSprite
 	}
 
 	var anim:String;
+	var durMult = 1;
 	override function update(elapsed:Float)
 	{
 		if (ClientPrefs.ffmpegMode) elapsed = 1 / ClientPrefs.targetFPS;
@@ -342,18 +343,29 @@ class Character extends FlxSprite
 				if(isAnimationFinished()) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 		}
 
-		if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
-		else if(isPlayer) holdTimer = 0;
+		if (!isPlayer)
+		{
+			if (!PlayState.opponentChart || curCharacter.startsWith('gf')) {
+				if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
 
-		try {
-			if (!isPlayer && holdTimer >= Conductor.stepCrochet * (0.0011 #if FLX_PITCH / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1) #end) * singDuration * PlayState.instance.singDurMult)
-			{
-				dance();
-				holdTimer = 0;
+				if (holdTimer >= Conductor.stepCrochet * (0.0011 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1)) * singDuration * (PlayState.instance != null ? PlayState.instance.singDurMult : 1))
+				{
+					dance();
+					holdTimer = 0;
+				}
+			} else {
+				if (getAnimationName().startsWith('sing'))
+				{
+					holdTimer += elapsed;
+				}
+				else
+					holdTimer = 0;
+
+				if (getAnimationName().endsWith('miss') && isAnimationFinished() && !debugMode)
+					dance();
 			}
-		} catch (e) {
-			dance(); holdTimer = 0;
 		}
+
 
 		anim = getAnimationName();
 		if(isAnimationFinished() && animOffsets.exists('$anim-loop'))
