@@ -292,7 +292,6 @@ class Character extends FlxSprite
 	}
 
 	var anim:String;
-	var durMult = 1;
 	override function update(elapsed:Float)
 	{
 		if (ClientPrefs.ffmpegMode) elapsed = 1 / ClientPrefs.targetFPS;
