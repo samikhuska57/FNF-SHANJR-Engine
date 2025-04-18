@@ -126,6 +126,7 @@ class PlayState extends MusicBeatState
 	var strumsHit:Array<Bool> = [false, false, false, false, false, false, false, false];
 	public var splashesPerFrame:Array<Int> = [0, 0, 0, 0];
 
+	public var inst:FlxSound;
 	public var vocals:FlxSound;
 	public var opponentVocals:FlxSound;
 	var intro3:FlxSound;
@@ -452,6 +453,7 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		FlxG.mouse.visible = false;
 		//Stops playing on a height that isn't divisible by 2
 		if (ClientPrefs.ffmpegMode && ClientPrefs.resolution != null) {
 			var resolutionValue = cast(ClientPrefs.resolution, String);
@@ -2492,7 +2494,7 @@ class PlayState extends MusicBeatState
 		if (ffmpegMode) vocals.volume = opponentVocals.volume = 0;
 		Conductor.songPosition = time;
 		songTime = time;
-		clearNotesBefore(time);
+		if (time > 0) clearNotesBefore(time);
 	}
 
 	public function startNextDialogue() {
@@ -2513,12 +2515,12 @@ class PlayState extends MusicBeatState
 		var diff:String = (SONG.specialAudioName.length > 1 ? SONG.specialAudioName : CoolUtil.difficultyString()).toLowerCase();
 		@:privateAccess
 		if (!ffmpegMode) {
-			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song, diff), 1, false);
+			FlxG.sound.playMusic(inst._sound, 1, false);
 			FlxG.sound.music.onComplete = finishSong.bind();
 			vocals.play();
 			opponentVocals.play();
 		} else {
-			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song, diff), 0, false);
+			FlxG.sound.playMusic(inst._sound, 0, false);
 			vocals.play(); vocals.volume = 0;
 			opponentVocals.play(); opponentVocals.volume = 0;
 		}
@@ -2528,10 +2530,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.pitch = playbackRate;
 		vocals.pitch = opponentVocals.pitch = playbackRate;
 
-		if(startOnTime > 0)
-		{
-			setSongTime(startOnTime - 500);
-		}
+		setSongTime(Math.max(0, startOnTime - 500) + Conductor.offset);
 		startOnTime = 0;
 
 		if(paused) {
@@ -2658,7 +2657,13 @@ class PlayState extends MusicBeatState
 		vocals.pitch = opponentVocals.pitch = playbackRate;
 		FlxG.sound.list.add(vocals);
 		FlxG.sound.list.add(opponentVocals);
-		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song, diff)));
+		inst = new FlxSound();
+		try
+		{
+			inst.loadEmbedded(Paths.inst(SONG.song, diff));
+		}
+		catch (e:Dynamic) {}
+		FlxG.sound.list.add(inst);
 
 		final noteData:Array<SwagSection> = SONG.notes;
 
@@ -3340,37 +3345,37 @@ class PlayState extends MusicBeatState
 		}
 		if (ClientPrefs.showNPS && (notesHitDateArray.length > 0 || oppNotesHitDateArray.length > 0)) {
 			notesToRemoveCount = 0;
+			var i = 0;
 
-			for (i in 0...notesHitDateArray.length) {
+			while (i < notesHitDateArray.length) {
 				if (!Math.isNaN(notesHitDateArray[i]) && (notesHitDateArray[i] + 1000 * npsSpeedMult < Conductor.songPosition)) {
 					notesToRemoveCount++;
 				}
+				i++;
 			}
 
 			if (notesToRemoveCount > 0) {
 				notesHitDateArray.splice(0, notesToRemoveCount);
 				notesHitArray.splice(0, notesToRemoveCount);
-				if (ClientPrefs.ratingCounter && judgeCountUpdateFrame <= 4 && judgementCounter != null) updateRatingCounter();
-				if (scoreTxtUpdateFrame <= 4 && scoreTxt != null) updateScore();
 			}
 
 			nps = 0;
-			for (value in notesHitArray) {
+			for (value in notesHitArray)
 				nps += value;
-			}
 			
 			oppNotesToRemoveCount = 0;
+			i = 0;
 
-			for (i in 0...oppNotesHitDateArray.length) {
-				if (!Math.isNaN(notesHitDateArray[i]) && (oppNotesHitDateArray[i] + 1000 * npsSpeedMult < Conductor.songPosition)) {
+			while (i < oppNotesHitDateArray.length) {
+				if (!Math.isNaN(oppNotesHitDateArray[i]) && (oppNotesHitDateArray[i] + 1000 * npsSpeedMult < Conductor.songPosition)) {
 					oppNotesToRemoveCount++;
 				}
+				i++;
 			}
 
 			if (oppNotesToRemoveCount > 0) {
 				oppNotesHitDateArray.splice(0, oppNotesToRemoveCount);
 				oppNotesHitArray.splice(0, oppNotesToRemoveCount);
-				if (ClientPrefs.ratingCounter && judgeCountUpdateFrame <= 4 && judgementCounter != null) updateRatingCounter();
 			}
 
 			oppNPS = 0;
@@ -3384,28 +3389,9 @@ class PlayState extends MusicBeatState
 			if (nps > maxNPS) {
 				maxNPS = nps;
 			}
-			if (nps > oldNPS)
-				npsIncreased = true;
 
-			if (nps < oldNPS)
-				npsDecreased = true;
-
-			if (oppNPS > oldOppNPS)
-				oppNpsIncreased = true;
-
-			if (oppNPS < oldOppNPS)
-				oppNpsDecreased = true;
-
-			if (npsIncreased || npsDecreased || oppNpsIncreased || oppNpsDecreased) {
-				if (ClientPrefs.ratingCounter && judgeCountUpdateFrame <= 8 && judgementCounter != null) updateRatingCounter();
-				if (scoreTxtUpdateFrame <= 8 && scoreTxt != null) updateScore();
-				if (npsIncreased) npsIncreased = false;
-				if (npsDecreased) npsDecreased = false;
-				if (oppNpsIncreased) oppNpsIncreased = false;
-				if (oppNpsDecreased) oppNpsDecreased = false;
-				oldNPS = nps;
-				oldOppNPS = oppNPS;
-			}
+			if (ClientPrefs.ratingCounter && judgeCountUpdateFrame <= 8 && judgementCounter != null) updateRatingCounter();
+			if (scoreTxtUpdateFrame <= 8 && scoreTxt != null) updateScore();
 		}
 
 		if (ClientPrefs.showcaseMode && !ClientPrefs.charsAndBG) {
@@ -3636,7 +3622,7 @@ class PlayState extends MusicBeatState
 			Conductor.songPosition += elapsed * 1000 * playbackRate;
 			if (!ffmpegMode)
 			{
-				if (FlxG.sound.music.time > Conductor.offset)
+				if (Conductor.songPosition > Conductor.offset)
 				{
 					Conductor.songPosition = FlxMath.lerp(FlxG.sound.music.time + Conductor.offset, Conductor.songPosition, Math.exp(-elapsed * 5));
 					var timeDiff:Float = Math.abs((FlxG.sound.music.time + Conductor.offset) - Conductor.songPosition);
@@ -6726,17 +6712,28 @@ class PlayState extends MusicBeatState
 
 		ffmpegExists = true;
 
-		process = new Process('ffmpeg', ['-v', 'quiet', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', lime.app.Application.current.window.width + 'x' + lime.app.Application.current.window.height, '-r', Std.string(targetFPS), '-i', '-', '-c:v', ClientPrefs.vidEncoder, '-b', Std.string(ClientPrefs.renderBitrate * 1000000),  'assets/gameRenders/' + Paths.formatToSongPath(SONG.song) + '.mp4']);
+		var fileName = 'assets/gameRenders/' + Paths.formatToSongPath(SONG.song);
+		if(FileSystem.exists(fileName + '.mp4')) { 
+			trace ('Duplicate video found! Adding anti-dupe...');
+			var dateNow:String = Date.now().toString();
+				dateNow = dateNow.replace(" ", "_");
+				dateNow = dateNow.replace(":", "'");
+            fileName += '-' + dateNow;
+        }
+
+		process = new Process('ffmpeg', ['-v', 'quiet', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', lime.app.Application.current.window.width + 'x' + lime.app.Application.current.window.height, '-r', Std.string(targetFPS), '-i', '-', '-c:v', ClientPrefs.vidEncoder, '-b', Std.string(ClientPrefs.renderBitrate * 1000000), fileName + '.mp4']);
 		FlxG.autoPause = false;
 	}
 
+	var img = null;
+	var bytes = null;
 	private function pipeFrame():Void
 	{
 		if (!ffmpegExists || process == null)
 		return;
 
-		var img = lime.app.Application.current.window.readPixels(new lime.math.Rectangle(FlxG.scaleMode.offset.x, FlxG.scaleMode.offset.y, FlxG.scaleMode.gameSize.x, FlxG.scaleMode.gameSize.y));
-		var bytes = img.getPixels(new lime.math.Rectangle(0, 0, img.width, img.height));
+		img = lime.app.Application.current.window.readPixels(new lime.math.Rectangle(FlxG.scaleMode.offset.x, FlxG.scaleMode.offset.y, FlxG.scaleMode.gameSize.x, FlxG.scaleMode.gameSize.y));
+		bytes = img.getPixels(new lime.math.Rectangle(0, 0, img.width, img.height));
 		process.stdin.writeBytes(bytes, 0, bytes.length);
 	}
 
