@@ -61,7 +61,9 @@ jobs:
           haxe compile.hxml
           cd ../..
       - name: Compile
-        run: haxelib run lime build linux -D ${{ inputs.buildFlags || 'commit' }}
+        run: |
+          rm -f assets/preload/gameRenders/renderlol.bat
+          haxelib run lime build linux -D ${{ inputs.buildFlags || 'commit' }}
       - name: Clear Previous Cache
         uses: actions/github-script@main
         with:
@@ -138,7 +140,9 @@ jobs:
           haxe compile.hxml
           cd ../..
       - name: Compile
-        run: haxelib run lime build windows -D ${{ inputs.buildFlags || 'commit' }}
+        run: |
+          Remove-Item -Force assets/preload/gameRenders/renderlinux.sh
+          haxelib run lime build windows -D ${{ inputs.buildFlags || 'commit' }}
       - name: Clear Previous Cache
         uses: actions/github-script@main
         with:
@@ -214,7 +218,9 @@ jobs:
           haxe compile.hxml
           cd ../..
       - name: Compile
-        run: haxelib run lime build mac -D ${{ inputs.buildFlags || 'commit' }}
+        run: |
+          rm -f assets/preload/gameRenders/renderlol.bat
+          haxelib run lime build mac -D ${{ inputs.buildFlags || 'commit' }}
       - name: Clear Previous Cache
         uses: actions/github-script@main
         with:
