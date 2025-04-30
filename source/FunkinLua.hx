@@ -1239,7 +1239,7 @@ class FunkinLua {
 				}
 				else
 				{
-					luaTrace('doTweenZoom | Can't tween object ' + vars + '. Value needs to be a camera.', false, false, FlxColor.RED);
+					luaTrace("doTweenZoom | Can't tween object " + vars + ". Value needs to be a camera.", false, false, FlxColor.RED);
 				}
 			} else {
 				luaTrace('doTweenZoom | Couldnt find object: ' + vars, false, false, FlxColor.RED);

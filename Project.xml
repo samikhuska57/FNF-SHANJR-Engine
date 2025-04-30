@@ -160,7 +160,7 @@
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
-	<haxedef name="NO_PRECOMPILED_HEADERS" if="linux" />
+	<haxedef name="NO_PRECOMPILED_HEADERS" />
 
 	<!--This fixes compiling with macros according to official PE source code-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
