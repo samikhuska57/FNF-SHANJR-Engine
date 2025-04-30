@@ -80,7 +80,7 @@ class CrashHandler {
 	
 			try {
 				if (!FileSystem.exists("crash/")) FileSystem.createDirectory("crash/");
-				File.saveContent(path, '$errorMessage\n\nCrash Happend on JS Engine v${MainMenuState.psychEngineJSVersionNumber}!');
+				File.saveContent(path, '$errorMessage\n\nCrash Happened on JS Engine v${MainMenuState.psychEngineJSVersionNumber}!');
 			} catch(e) trace('Couldn\'t save error message. (${e.message})');
 	
 			Sys.println(errorMessage);
