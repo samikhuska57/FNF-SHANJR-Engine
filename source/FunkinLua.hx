@@ -1229,12 +1229,18 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "doTweenZoom", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String) {
 			var penisExam:Dynamic = tweenShit(tag, vars);
 			if(penisExam != null) {
-				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(penisExam, {zoom: value}, duration / PlayState.instance.playbackRate, {ease: getFlxEaseByString(ease),
-					onComplete: function(twn:FlxTween) {
-						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
-						PlayState.instance.modchartTweens.remove(tag);
-					}
-				}));
+				if(vars == "camHud" && vars == "camGame" && vars == "Hud" && var == "Game") {
+					PlayState.instance.modchartTweens.set(tag, FlxTween.tween(penisExam, {zoom: value}, duration / PlayState.instance.playbackRate, {ease: getFlxEaseByString(ease),
+						onComplete: function(twn:FlxTween) {
+							PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+							PlayState.instance.modchartTweens.remove(tag);
+						}
+					}));
+				}
+				else
+				{
+					luaTrace('doTweenZoom | Can't tween object ' + vars + '. Value needs to be a camera.', false, false, FlxColor.RED);
+				}
 			} else {
 				luaTrace('doTweenZoom | Couldnt find object: ' + vars, false, false, FlxColor.RED);
 			}
