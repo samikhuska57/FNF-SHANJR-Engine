@@ -1229,7 +1229,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "doTweenZoom", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String) {
 			var penisExam:Dynamic = tweenShit(tag, vars);
 			if(penisExam != null) {
-				if(vars == "camHud" && vars == "camGame" && vars == "Hud" && var == "Game") {
+				if(vars == 'camHud' && vars == 'camGame' && vars == 'Hud' && vars == 'Game') {
 					PlayState.instance.modchartTweens.set(tag, FlxTween.tween(penisExam, {zoom: value}, duration / PlayState.instance.playbackRate, {ease: getFlxEaseByString(ease),
 						onComplete: function(twn:FlxTween) {
 							PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
