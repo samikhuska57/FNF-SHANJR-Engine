@@ -254,7 +254,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			if (date.getMonth() == 4 && date.getDate() == 1)
+			if (date.getMonth() == 3 && date.getDate() == 1)
 			{
 				FlxG.sound.playMusic(Paths.music('aprilFools'), 0);
 			}

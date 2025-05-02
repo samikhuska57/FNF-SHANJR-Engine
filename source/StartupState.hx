@@ -67,7 +67,7 @@ class StartupState extends MusicBeatState
 			canChristmas = true;
 			maxIntros += 1; //JOLLY SANTA!!!
 		}
-		else if (date.getMonth() == 4 && date.getDate() == 1) // funny
+		else if (date.getMonth() == 3 && date.getDate() == 1) // funny
 		{
 			canAutism = true;
 			maxIntros += 1; //autism!!!!!!!!!!!!!!!!!!!!!!oubgrebiugerbiuegrs
