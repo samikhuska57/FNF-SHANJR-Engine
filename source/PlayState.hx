@@ -5982,7 +5982,7 @@ class PlayState extends MusicBeatState
 		}
 		luaArray = [];
 
-		camFollow.put();
+		if (camFollow != null) camFollow.put();
 
 		#if hscript
 		if(FunkinLua.hscript != null) FunkinLua.hscript = null;
