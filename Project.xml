@@ -31,6 +31,7 @@
 	<define name="MODS_ALLOWED" if="desktop || mobile" unless="web" />
 	<define name="LUA_ALLOWED" if="desktop || mobile" unless="web" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
+	<define name="APRIL_FOOLS" /> <!-- DELETE THIS TO REMOVE THE APRIL FOOLS START UP, WHICH ONLY HAPPENS ONLY ON APRIL 1st -->
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits || web"/>
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
 	<define name="DISCORD_ALLOWED" if="desktop || mobile" unless="web" />

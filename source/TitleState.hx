@@ -254,6 +254,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
+			#if APRIL_FOOLS
 			if (date.getMonth() == 3 && date.getDate() == 1)
 			{
 				FlxG.sound.playMusic(Paths.music('aprilFools'), 0);
@@ -262,6 +263,12 @@ class TitleState extends MusicBeatState
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu-' + ClientPrefs.daMenuMusic), 0);
 			}
+			#else
+			if(FlxG.sound.music == null)
+			{
+				FlxG.sound.playMusic(Paths.music('freakyMenu-' + ClientPrefs.daMenuMusic), 0);
+			}
+			#end
 		}
 
 		switch(ClientPrefs.daMenuMusic) // change this if you're making a source mod, like add your own or something

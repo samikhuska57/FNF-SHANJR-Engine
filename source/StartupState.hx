@@ -67,12 +67,13 @@ class StartupState extends MusicBeatState
 			canChristmas = true;
 			maxIntros += 1; //JOLLY SANTA!!!
 		}
+		#if APRIL_FOOLS
 		else if (date.getMonth() == 3 && date.getDate() == 1) // funny
 		{
 			canAutism = true;
 			maxIntros += 1; //autism!!!!!!!!!!!!!!!!!!!!!!oubgrebiugerbiuegrs
 		}
-
+		#end
 		FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;
 		logo = new FlxSprite().loadGraphic(Paths.image('sillyLogo', 'splash'));
