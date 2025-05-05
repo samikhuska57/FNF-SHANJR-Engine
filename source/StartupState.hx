@@ -68,11 +68,15 @@ class StartupState extends MusicBeatState
 			maxIntros += 1; //JOLLY SANTA!!!
 		}
 		#if APRIL_FOOLS
-		else if (date.getMonth() == 3 && date.getDate() == 1) // funny
-		{
-			canAutism = true;
-			maxIntros += 1; //autism!!!!!!!!!!!!!!!!!!!!!!oubgrebiugerbiuegrs
-		}
+			else if (date.getMonth() == 3 && date.getDate() == 1) // funny
+			{
+				if (!ClientPrefs.disableAprilFools)
+				{
+				canAutism = true;
+				maxIntros += 1; //autism!!!!!!!!!!!!!!!!!!!!!!oubgrebiugerbiuegrs
+				// burger
+				}
+			}
 		#end
 		FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;
