@@ -515,9 +515,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.onChange = onChangePauseMusic;
 		
 		#if APRIL_FOOLS 		
-			if (!ClientPrefs.disableAprilFools) {
-				if (!date.getMonth() == 3 && !date.getDate() == 1)
-				{
+			if (!ClientPrefs.disableAprilFools || !(date.getMonth() == 3 && date.getDate() == 1)) {
 				var option:Option = new Option('Menu Song:',
 					"What song do you prefer when you're in menus?",
 					'daMenuMusic',
@@ -526,7 +524,6 @@ class VisualsUISubState extends BaseOptionsMenu
 					['Default', 'Anniversary', 'Mashup', 'Base Game', 'DDTO+', 'Dave & Bambi', 'Dave & Bambi (Old)', 'VS Impostor', 'VS Nonsense V2']);
 				addOption(option);
 				option.onChange = onChangeMenuMusic;	
-				}			
 			}
 		#else
 			var option:Option = new Option('Menu Song:',
@@ -538,18 +535,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			addOption(option);
 			option.onChange = onChangeMenuMusic;		
 		#end
-		}
-		else
-		{
-		var option:Option = new Option('Menu Song:',
-			"What song do you prefer when you're in menus?",
-			'daMenuMusic',
-			'string',
-			'Default',
-			['Default', 'Anniversary', 'Mashup', 'Base Game', 'DDTO+', 'Dave & Bambi', 'Dave & Bambi (Old)', 'VS Impostor', 'VS Nonsense V2']);
-		addOption(option);
-		option.onChange = onChangeMenuMusic;
-		}
+
 		#if CHECK_FOR_UPDATES
 		var option:Option = new Option('Check for Updates',
 			'On Release builds, turn this on to check for updates when you start the game.',
