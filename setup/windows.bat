@@ -4,7 +4,7 @@ cd ..
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
 @echo on
-haxelib git lime https://github.com/moxie-coder/lime-8.2.2.git --quiet
+haxelib install lime 8.1.3 --quiet
 haxelib install openfl 9.3.3 --quiet
 haxelib git flixel https://github.com/moxie-coder/flixel 5.6.2 --quiet
 haxelib install flixel-addons 3.2.3 --quiet
