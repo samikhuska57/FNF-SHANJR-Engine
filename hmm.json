@@ -2,8 +2,10 @@
   "dependencies": [
     {
       "name": "lime",
-      "type": "haxelib",
-      "version": "8.1.3"
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/moxie-coder/lime-8.2.2"
     },
     {
       "name": "openfl",
