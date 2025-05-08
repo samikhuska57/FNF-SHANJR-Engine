@@ -1,4 +1,5 @@
 name: Feature Request
+description: "Make an issue to either add or fix something"
 labels: [enhancement, status: pending triage]
 body:
   - type: textarea
