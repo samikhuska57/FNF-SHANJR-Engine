@@ -11,6 +11,7 @@ body:
     id: eyetest
     attributes:
       label: To test your sight, and reliability, please select the option of what should NOT be requested.
+      description: "If it's code optimization, and the optimization is yours, make a [https://github.com/JordanSantiagoYT/FNF-JS-Engine/pulls](Pull Request) please."
       options:
         - Proper credit that was forgotten.
         - Thing that would not cause problems.
@@ -19,6 +20,6 @@ body:
         - A good idea.
         - Stage Editor.
         - Better LUA mod support idea.
-        - Code optimization that would make the game faster. (You should make a Pull Request if this is your request, by the way.)
+        - Code optimization that would make the game faster.
     validations:
       required: true
