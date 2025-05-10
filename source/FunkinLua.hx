@@ -3357,7 +3357,7 @@ class FunkinLua {
 			if(deprecated && !getBool('luaDeprecatedWarnings')) {
 				return;
 			}
-			PlayState.instance.addTextToDebug(text, color);
+			PlayState.instance.addTextToDebug(text.toUpperCase(), color);
 			trace(text);
 		}
 		#end
@@ -3559,7 +3559,7 @@ class DebugLuaText extends FlxText
 	public function new(text:String, parentGroup:FlxTypedGroup<DebugLuaText>, color:FlxColor) {
 		this.parentGroup = parentGroup;
 		super(10, 10, 0, text, 16);
-		setFormat(Paths.font("vcr.ttf"), 16, color, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		setFormat(Paths.font("comic.ttf"), 16, color, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scrollFactor.set();
 		borderSize = 1;
 	}

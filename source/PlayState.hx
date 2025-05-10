@@ -1749,7 +1749,8 @@ class PlayState extends MusicBeatState
 			spr.y += newText.height + 2;
 		});
 		luaDebugGroup.add(newText);
-
+		newText.setFormat(Paths.font("old_windows.ttf"));
+		
 		Sys.println(text);
 		#end
 	}
