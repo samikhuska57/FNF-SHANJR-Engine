@@ -20,7 +20,9 @@
 
 README.md revamped by [Nael2xd](https://youtube.com/@nael2xd?si=axwJrY_8jdlXUwSm)
 
-_If you're looking for the Mobile port, [go here!](https://github.com/JordanSantiagoYT/FNF-JS-Engine/tree/mobile) the mobile port are discontinued, current version of the port is v1.46.0.
+_If you're looking for the Mobile port, [go here](https://github.com/JordanSantiagoYT/FNF-JS-Engine/tree/mobile)._
+
+_Mobile port announcement: The mobile port is discontinued, current version of the port is v1.46.0._
 
 ## Welcome
 
