@@ -10,22 +10,49 @@ body:
       required: true
 
   - type: dropdown
-    id: outdatedBuildCheck
+    id: buildVersion
+    attributes:
+      label: "What version did this bug occur?"
+      options:
+      # add a version to these options before making a release please.
+      # - stinko
+          - "1.47.0"
+          - "1.46.0"
+          - "1.45.0"
+          - "1.44.0"
+          - "1.43.0"
+          - "1.42.0"
+          - "1.41.0"
+          - "1.40.0"
+          - "1.39.0"
+          - "1.38.0"
+          - "1.37.0"
+          - "1.36.0"
+          - "1.35.0"
+          - "Version Lower than 1.35.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: currentBuildCheck
     attributes:
       label: "Did you check if the problem occurs in the latest build?"
+      description: "You don't need to answer this if this is happening on the latest version."
       options:
         - "No"
         - "Yes"
     validations:
-      required: true
+      required: false
 
   - type: dropdown
     id: commitBuildCheck
     attributes:
       label: "Commit build or Release build?"
+      description: ""
       options:
-        - "Commit Build"
         - "Release build"
+        - "Commit Build of latest version."
+        - "Older commit build of the latest version."
     validations:
       required: true
 
@@ -71,9 +98,9 @@ body:
     attributes:
       label: "Are you modding a build from source or with Lua?"
       options:
-        - Lua
-        - Source
-        - I'm not modding (Base game issue)
+        - "Lua"
+        - "Source"
+        - "I'm not modding (Base game issue)"
     validations:
       required: true
 
@@ -85,9 +112,9 @@ body:
         - "Windows"
         - "Linux"
         - "Mac"
-        - "Android"
-        - "iOS"
-        - "Flash/Air-based target"
+        - "Mobile | Android"
+        - "Mobile | iOS"
+        - "Flash/Air-based target" #the fuck is this one????
         - "Neko, HashLink, or other build system"
     validations:
       required: true
