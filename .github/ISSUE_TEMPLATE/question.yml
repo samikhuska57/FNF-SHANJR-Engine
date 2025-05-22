@@ -48,7 +48,6 @@ body:
     id: commitBuildCheck
     attributes:
       label: "Commit build or Release build?"
-      description: ""
       options:
         - "Release build"
         - "Commit Build of latest version."
