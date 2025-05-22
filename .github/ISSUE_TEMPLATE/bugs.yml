@@ -1,5 +1,5 @@
 name: Bug report
-description: Report bugs with the engine here
+description: "Report bugs with the engine here"
 labels: [bug, "status: pending triage"]
 body:
   - type: textarea
@@ -48,7 +48,6 @@ body:
     id: commitBuildCheck
     attributes:
       label: "Commit build or Release build?"
-      description: ""
       options:
         - "Release build"
         - "Commit Build of latest version."
