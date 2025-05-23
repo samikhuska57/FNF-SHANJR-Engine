@@ -5307,12 +5307,16 @@ class PlayState extends MusicBeatState
 			});
 
 			if(ClientPrefs.charsAndBG && FlxG.keys.anyJustPressed(tauntKey) && !char.animation.curAnim.name.endsWith('miss') && char.specialAnim == false && ClientPrefs.spaceVPose){
-				char.playAnim('hey', true);
-				char.specialAnim = true;
-				char.heyTimer = 0.59;
-				FlxG.sound.play(Paths.sound('hey'));
-				trace("HEY!!");
+				if (char.animOffsets.exists('hey'))
+				{
+					char.playAnim('hey', true);
+					char.specialAnim = true;
+					char.heyTimer = 0.59;
+					FlxG.sound.play(Paths.sound('hey'));
+					trace("HEY!!");
 				}
+				else trace ('Character doesnt have a hey animation!');
+			}
 
 			if (!parsedHoldArray.contains(true) || endingSong) {
 				if (ClientPrefs.charsAndBG) playerDance();
