@@ -11,7 +11,7 @@ body:
   - type: dropdown
     id: buildVersion
     attributes:
-      label: "What version did this bug occur?"
+      label: "What version are you using?"
       description: "You HAVE to answer this."
       options:
       # add a version to these options before making a release please.

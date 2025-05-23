@@ -97,9 +97,10 @@ body:
     attributes:
       label: "Are you modding a build from source or with Lua?"
       options:
+        - "I'm not modding (Base game issue)"
         - "Lua"
         - "Source"
-        - "I'm not modding (Base game issue)"
+        - "I'm not modding (Downloaded Modpack Issue)"
     validations:
       required: true
 
