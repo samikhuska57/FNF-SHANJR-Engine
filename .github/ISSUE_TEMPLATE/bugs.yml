@@ -12,10 +12,12 @@ body:
   - type: dropdown
     id: buildVersion
     attributes:
-      label: "What version did this bug occur?"
+      label: "What version did the bug occur?"
+      description: "You HAVE to answer this."
       options:
       # add a version to these options before making a release please.
       # - stinko
+          - "No Selected Version"
           - "1.47.0"
           - "1.46.0"
           - "1.45.0"
@@ -59,7 +61,7 @@ body:
     id: knownIssueCheck
     attributes:
       label: "Did you check if this issue is already known?"
-      description: "[Click me here to see the Known Issues and Fixes. Please?](https://github.com/JordanSantiagoYT/FNF-JS-Engine/issues/359)"
+      description: "[Click me here to see the Known Issues and Fixes... Please?](https://github.com/JordanSantiagoYT/FNF-JS-Engine/issues/359)"
       options:
         - "No"
         - "Yes"
