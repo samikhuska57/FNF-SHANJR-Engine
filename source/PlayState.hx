@@ -908,8 +908,8 @@ class PlayState extends MusicBeatState
 
 		if (ClientPrefs.laneUnderlay)
 		{
-			add(laneunderlayOpponent);
-			add(laneunderlay);
+			insert(1, laneunderlayOpponent);
+			insert(1, laneunderlay);
 		}
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
