@@ -862,9 +862,6 @@ class PlayState extends MusicBeatState
 			bfNoteskin = boyfriend.noteskin;
 		}
 
-		popUpGroup = new FlxTypedSpriteGroup<Popup>();
-		add(popUpGroup);
-
 		shouldDrainHealth = (opponentDrain || (opponentChart ? boyfriend.healthDrain : dad.healthDrain));
 		if (!opponentDrain && !Math.isNaN((opponentChart ? boyfriend : dad).drainAmount) && (opponentChart ? boyfriend : dad).drainFloor != 0) healthDrainAmount = opponentChart ? boyfriend.drainAmount : dad.drainAmount;
 		if (!opponentDrain && !Math.isNaN((opponentChart ? boyfriend : dad).drainFloor) && (opponentChart ? boyfriend : dad).drainFloor != 0) healthDrainFloor = opponentChart ? boyfriend.drainFloor : dad.drainFloor;
@@ -911,6 +908,9 @@ class PlayState extends MusicBeatState
 			insert(1, laneunderlayOpponent);
 			insert(1, laneunderlay);
 		}
+
+		popUpGroup = new FlxTypedSpriteGroup<Popup>();
+		add(popUpGroup);
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
 
