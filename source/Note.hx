@@ -2,11 +2,9 @@ package;
 
 import backend.NoteTypesConfig;
 import flixel.util.FlxColor;
-
-import shaders.RGBPalette;
-import shaders.RGBPalette.RGBShaderReference;
-
 import objects.SustainSplash;
+import shaders.RGBPalette.RGBShaderReference;
+import shaders.RGBPalette;
 
 using StringTools;
 
@@ -321,7 +319,7 @@ class Note extends FlxSprite
 		var skin:String = texture + postfix;
 		if(texture.length < 1) {
 			skin = PlayState.SONG != null ? PlayState.SONG.arrowSkin : null;
-			if(skin == null || skin.length < 1)
+			if(skin == null || skin.length < 1 || frames == null)
 				skin = defaultNoteSkin + postfix;
 		}
 
