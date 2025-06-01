@@ -44,6 +44,7 @@ This contains lots and lots of customizable and features built in to JS Engine, 
 - Cool customizable UI!
 - Multiple Chart Backups!
 - Custom Crash UI (Instead of Regular Psych Engine Crash)!
+- A nifty button in your Discord Profile!
 
 There is like lots and lots of stuff i've missed, but at least you would like those features built in **JS ENGINE**
 
@@ -115,7 +116,7 @@ same goes for *Lua Scripts*, comment out or delete the line with `LUA_ALLOWED`, 
 @PatoFlamejanteTV
 - Small coding, also made a PDF guide for JS Engine.
 
-@mcagabe19
+@HomuHomu833
 - Ported JS Engine to mobile
 
 <details>
