@@ -159,6 +159,10 @@
 
 	<haxedef name='no-deprecation-warnings' unless="debug" />
 
+	<!-- back in my day we used to have errors that gave little info -->
+	<haxedef name="message.reporting" value="pretty" unless="{haxe &lt; 4.3.1}"/>
+	<haxedef name="message.log-format" value="pretty" unless="{haxe &lt; 4.3.1}"/>
+
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
 	<haxedef name="NO_PRECOMPILED_HEADERS" />

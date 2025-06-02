@@ -1,41 +1,40 @@
 package;
 
+import Achievements;
+import Character.Boyfriend;
+import Conductor.Rating;
+import DialogueBoxPsych;
+import FunkinLua;
+import Note.EventNote;
+import Note.PreloadedChartNote;
+import Note;
 import Section.SwagSection;
+import Shaders;
 import Song.SwagSong;
+import StageData;
+import editors.CharacterEditorState;
+import editors.ChartingState;
 import flixel.FlxObject;
+import flixel.input.keyboard.FlxKey;
 import flixel.ui.FlxBar;
+import flixel.util.FlxSave;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
 import haxe.Json;
-import lime.utils.Assets;
 import lime.system.System;
+import lime.utils.Assets;
+import objects.*;
+import openfl.events.KeyboardEvent;
 import openfl.filters.BitmapFilter;
 import openfl.utils.Assets as OpenFlAssets;
-import editors.ChartingState;
-import editors.CharacterEditorState;
-import flixel.input.keyboard.FlxKey;
-import Note.EventNote;
-import openfl.events.KeyboardEvent;
-import flixel.util.FlxSave;
-import Achievements;
-import StageData;
-import FunkinLua;
-import DialogueBoxPsych;
-import Conductor.Rating;
-import Character.Boyfriend;
-import Shaders;
-import Note.PreloadedChartNote;
 import utils.*;
 
+using StringTools;
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
 #end
 
-import Note;
-import objects.*;
-
-using StringTools;
 
 class PlayState extends MusicBeatState
 {
@@ -509,19 +508,12 @@ class PlayState extends MusicBeatState
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed', 1);
 		tauntKey = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('qt_taunt'));
 
-		keysArray = [
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_left')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_down')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_up')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_right'))
-		];
+		keysArray = [];
 
-		controlArray = [
-			'NOTE_LEFT',
-			'NOTE_DOWN',
-			'NOTE_UP',
-			'NOTE_RIGHT'
-		];
+		controlArray = ['NOTE_LEFT', 'NOTE_DOWN', 'NOTE_UP', 'NOTE_RIGHT'];
+
+		for (e in controlArray)
+			keysArray.push(ClientPrefs.copyKey(ClientPrefs.keyBinds.get(e.toLowerCase())));
 
 		// For the "Just the Two of Us" achievement
 		for (i in 0...keysArray.length)
@@ -1183,9 +1175,7 @@ class PlayState extends MusicBeatState
 
 		if (curSong.toLowerCase() == "guns") // added this to bring back the old 2021 fnf vibes, i wish the fnf fandom revives one day :(
 		{
-			var randomVar:Int = 0;
-			if (!ClientPrefs.noGunsRNG) randomVar = Std.random(15);
-			if (ClientPrefs.noGunsRNG) randomVar = 8;
+			final randomVar:Int = (ClientPrefs.noGunsRNG) ? 8 : Std.random(15);
 			trace(randomVar);
 			if (randomVar == 8)
 			{
@@ -1371,45 +1361,67 @@ class PlayState extends MusicBeatState
 		var style:String = ClientPrefs.scoreStyle;
 		var dadColors:Array<Int> = CoolUtil.getHealthColors(dad);
 
-		switch(style)
-		{
-			case 'Kade Engine', 'Leather Engine': //do nothing lmao
-			case 'JS Engine':
-				scoreTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.fromRGB(dadColors[0], dadColors[1], dadColors[2]), CENTER, OUTLINE, FlxColor.BLACK);
-				scoreTxt.borderSize = 2;
-
-			case 'Dave Engine', 'Psych Engine', 'VS Impostor': 
-				scoreTxt.y = healthBarBG.y + (style == 'Dave Engine' ? 40 : 36);
-				scoreTxt.setFormat(Paths.font((style == 'Dave Engine' ? "comic.ttf" : "vcr.ttf")), 20, (style != 'VS Impostor' ? FlxColor.WHITE : FlxColor.fromRGB(dadColors[0], dadColors[1], dadColors[2])), CENTER, OUTLINE, FlxColor.BLACK);
-				scoreTxt.borderSize = 1.25;
-
-			case 'Doki Doki+', 'TGT V4': 
-				scoreTxt.y = healthBarBG.y + 48;
-				scoreTxt.setFormat(Paths.font((ClientPrefs.scoreStyle == 'TGT V4' ? "calibri.ttf" : "Aller_rg.ttf")), 20, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-				scoreTxt.borderSize = 1.25;
-
-			case 'Forever Engine', 'Vanilla':
-				if (style == 'Vanilla') scoreTxt.x = 200;
-				scoreTxt.y = healthBarBG.y + (style == 'Forever Engine' ? 40 : 30);
-				scoreTxt.setFormat(Paths.font("vcr.ttf"), (style == 'Vanilla' ? 16 : 18), FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-				scoreTxt.borderSize = 1.25;
-				updateScore();
-		}
-		style = null;
-		if (ClientPrefs.showcaseMode) {
-			var items = [scoreTxt, botplayTxt, healthBarBG, healthBar, iconP1, iconP2];
-			if (ClientPrefs.showcaseST == 'AMZ')
-				items = [scoreTxt, botplayTxt, timeBarBG, timeBar, timeTxt];
-			for (i in items)
-				if (i != null) i.visible = false;
-		}
-		if (ClientPrefs.hideHud) {
-			final daArray:Array<Dynamic> = [scoreTxt, botplayTxt, healthBarBG, healthBar, iconP2, iconP1, timeBarBG, timeBar, timeTxt];
-			for (i in daArray){
-				if (i != null)
-					i.visible = false;
+		// Configuration for each style
+		var styleSettings = { // profiency using typedefs
+			'JS Engine': {
+				font: "vcr.ttf", size: 18, color: FlxColor.fromRGB(dadColors[0], dadColors[1], dadColors[2]),
+				yOffset: null, borderSize: 2, xOverride: null
+			},
+			'Dave Engine': {
+				font: "comic.ttf", size: 20, color: FlxColor.WHITE,
+				yOffset: 40, borderSize: 1.25, xOverride: null
+			},
+			'Psych Engine': {
+				font: "vcr.ttf", size: 20, color: FlxColor.WHITE,
+				yOffset: 36, borderSize: 1.25, xOverride: null
+			},
+			'VS Impostor': {
+				font: "vcr.ttf", size: 20, color: FlxColor.fromRGB(dadColors[0], dadColors[1], dadColors[2]),
+				yOffset: 36, borderSize: 1.25, xOverride: null
+			},
+			'Doki Doki+': {
+				font: "Aller_rg.ttf", size: 20, color: FlxColor.WHITE,
+				yOffset: 48, borderSize: 1.25, xOverride: null
+			},
+			'TGT V4': {
+				font: "calibri.ttf", size: 20, color: FlxColor.WHITE,
+				yOffset: 48, borderSize: 1.25, xOverride: null
+			},
+			'Forever Engine': {
+				font: "vcr.ttf", size: 18, color: FlxColor.WHITE,
+				yOffset: 40, borderSize: 1.25, xOverride: null
+			},
+			'Vanilla': {
+				font: "vcr.ttf", size: 16, color: FlxColor.WHITE,
+				yOffset: 30, borderSize: 1.25, xOverride: 200
 			}
+		};
+
+		// Apply settings if style is in the map
+		if (Reflect.hasField(styleSettings, style)) {
+			final s = Reflect.getProperty(styleSettings, style);
+			if (s.yOffset != null) scoreTxt.y = healthBarBG.y + s.yOffset;
+			if (s.xOverride != null) scoreTxt.x = s.xOverride;
+			scoreTxt.setFormat(Paths.font(s.font), s.size, s.color, CENTER, OUTLINE, FlxColor.BLACK);
+			scoreTxt.borderSize = s.borderSize;
+			if (style == 'Forever Engine' || style == 'Vanilla') updateScore();
 		}
+
+		// Showcase and HUD logic
+		if (ClientPrefs.showcaseMode) {
+			final items = (ClientPrefs.showcaseST == 'AMZ')
+				? [scoreTxt, botplayTxt, timeBarBG, timeBar, timeTxt]
+				: [scoreTxt, botplayTxt, healthBarBG, healthBar, iconP1, iconP2];
+			for (item in items) if (item != null) item.visible = false;
+		}
+
+		if (ClientPrefs.hideHud) {
+			final hudItems:Array<Dynamic> = [scoreTxt, botplayTxt, healthBarBG, healthBar, iconP2, iconP1, timeBarBG, timeBar, timeTxt];
+			for (item in hudItems) if (item != null) item.visible = false;
+		}
+
+		style = null;
+
 		if (!ClientPrefs.charsAndBG) {
 			remove(dadGroup);
 			remove(boyfriendGroup);
@@ -5137,92 +5149,100 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public var strumsBlocked:Array<Bool> = [];
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
-		//trace('Pressed: ' + eventKey);
 
-		if (!cpuControlled && startedCountdown && !paused && key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || ClientPrefs.controllerMode))
-		{
-			if(!boyfriend.stunned && generatedMusic && !endingSong)
-			{
-				//more accurate hit time for the ratings?
-				var lastTime:Float = Conductor.songPosition;
-				Conductor.songPosition = FlxG.sound.music.time;
+		if (!ClientPrefs.controllerMode && FlxG.keys.checkStatus(eventKey, JUST_PRESSED))
+			keyPressed(key);
+	}
 
-				var canMiss:Bool = !ClientPrefs.ghostTapping;
+	public var strumsBlocked:Array<Bool> = [];
+	private function keyPressed(key:Int):Void
+	{
+		if(cpuControlled || paused || key < 0) return;
+		if(!generatedMusic || endingSong || boyfriend.stunned) return;
 
-				// obtain notes that the player can hit
-				var plrInputNotes:Array<Note> = notes.members.filter(function(n:Note):Bool {
-					var canHit:Bool = !usingBotEnergy && !strumsBlocked[n.noteData] && n.canBeHit && n.mustPress && !n.tooLate && !n.wasGoodHit && !n.blockHit;
-					return n != null && canHit && !n.isSustainNote && n.noteData == key;
-				});
-				plrInputNotes.sort(sortHitNotes);
+		//more accurate hit time for the ratings?
+		var lastTime:Float = Conductor.songPosition;
+		Conductor.songPosition = FlxG.sound.music.time;
 
-				if (plrInputNotes.length != 0) {
-					var funnyNote:Note = plrInputNotes[0]; // front note
+		var canMiss:Bool = !ClientPrefs.ghostTapping;
 
-					if (plrInputNotes.length > 1) {
-						var doubleNote:Note = plrInputNotes[1];
+		// obtain notes that the player can hit
+		var plrInputNotes:Array<Note> = notes.members.filter(function(n:Note):Bool {
+			var canHit:Bool = !usingBotEnergy && !strumsBlocked[n.noteData] && n.canBeHit && n.mustPress && !n.tooLate && !n.wasGoodHit && !n.blockHit;
+			return n != null && canHit && !n.isSustainNote && n.noteData == key;
+		});
+		plrInputNotes.sort(sortHitNotes);
 
-						//if the note has the same notedata and doOppStuff indicator as funnynote, then do the check
-						if (doubleNote.noteData == funnyNote.noteData && doubleNote.doOppStuff == funnyNote.doOppStuff) {
-							// if the note has a 0ms distance (is on top of the current note), kill it
-							if (Math.abs(doubleNote.strumTime - funnyNote.strumTime) < 1.0)
-								invalidateNote(doubleNote);
-							else if (doubleNote.strumTime < funnyNote.strumTime)
-							{
-								// replace the note if its ahead of time (or at least ensure "doubleNote" is ahead)
-								funnyNote = doubleNote;
-							}
-						}
-						else goodNoteHit(doubleNote); //otherwise, hit doubleNote instead of killing it
-					}
-					goodNoteHit(funnyNote);
-					if (plrInputNotes.length > 2 && ClientPrefs.ezSpam) //literally all you need to allow you to spam though impossibly hard jacks
+		if (plrInputNotes.length != 0) {
+			var funnyNote:Note = plrInputNotes[0]; // front note
+
+			if (plrInputNotes.length > 1) {
+				var doubleNote:Note = plrInputNotes[1];
+
+				//if the note has the same notedata and doOppStuff indicator as funnynote, then do the check
+				if (doubleNote.noteData == funnyNote.noteData && doubleNote.doOppStuff == funnyNote.doOppStuff) {
+					// if the note has a 0ms distance (is on top of the current note), kill it
+					if (Math.abs(doubleNote.strumTime - funnyNote.strumTime) < 1.0)
+						invalidateNote(doubleNote);
+					else if (doubleNote.strumTime < funnyNote.strumTime)
 					{
-						var notesThatCanBeHit = plrInputNotes.length;
-						for (i in 1...Std.int(notesThatCanBeHit)) //i may consider making this hit half the notes instead
-						{
-							goodNoteHit(plrInputNotes[i]);
-						}
+						// replace the note if its ahead of time (or at least ensure "doubleNote" is ahead)
+						funnyNote = doubleNote;
 					}
 				}
-				else {
-					callOnLuas('onGhostTap', [key]);
-					if (!opponentChart && ClientPrefs.ghostTapAnim && ClientPrefs.charsAndBG)
-					{
-						boyfriend.playAnim(singAnimations[Std.int(Math.abs(key))], true);
-						if (ClientPrefs.cameraPanning) camPanRoutine(singAnimations[Std.int(Math.abs(key))], 'bf');
-						boyfriend.holdTimer = 0;
-					}
-					if (opponentChart && ClientPrefs.ghostTapAnim && ClientPrefs.charsAndBG)
-					{
-						dad.playAnim(singAnimations[Std.int(Math.abs(key))], true);
-						if (ClientPrefs.cameraPanning) camPanRoutine(singAnimations[Std.int(Math.abs(key))], 'dad');
-						dad.holdTimer = 0;
-					}
-					if (canMiss) {
-						noteMissPress(key);
-					}
+				else goodNoteHit(doubleNote); //otherwise, hit doubleNote instead of killing it
+			}
+			goodNoteHit(funnyNote);
+			if (plrInputNotes.length > 1 && ClientPrefs.ezSpam) {
+				// Only hit additional notes that are very close in timing (within ~50ms)
+				var baseTime = funnyNote.strumTime;
+				
+				for (i in 1...plrInputNotes.length) {
+						var note = plrInputNotes[i];
+						// Only hit notes that are very close to the first note's timing
+						if (Math.abs(note.strumTime - baseTime) <= 50.0) { // 50ms window
+								goodNoteHit(note);
+						} else {
+								break; // Stop once we hit notes that are too far apart
+						}
 				}
-
-				keysPressed[key] = true;
-
-				//more accurate hit time for the ratings? part 2 (Now that the calculations are done, go back to the time it was before for not causing a note stutter)
-				Conductor.songPosition = lastTime;
 			}
-
-			var spr:StrumNote = playerStrums.members[key];
-			if(strumsBlocked[key] != true && spr != null && spr.animation != null && spr.animation.curAnim.name != 'confirm')
-			{
-				spr.playAnim('pressed');
-				spr.resetAnim = 0;
-			}
-			callOnLuas('onKeyPress', [key]);
 		}
+		else {
+			callOnLuas('onGhostTap', [key]);
+			if (!opponentChart && ClientPrefs.ghostTapAnim && ClientPrefs.charsAndBG)
+			{
+				boyfriend.playAnim(singAnimations[Std.int(Math.abs(key))], true);
+				if (ClientPrefs.cameraPanning) camPanRoutine(singAnimations[Std.int(Math.abs(key))], 'bf');
+				boyfriend.holdTimer = 0;
+			}
+			if (opponentChart && ClientPrefs.ghostTapAnim && ClientPrefs.charsAndBG)
+			{
+				dad.playAnim(singAnimations[Std.int(Math.abs(key))], true);
+				if (ClientPrefs.cameraPanning) camPanRoutine(singAnimations[Std.int(Math.abs(key))], 'dad');
+				dad.holdTimer = 0;
+			}
+			if (canMiss) {
+				noteMissPress(key);
+			}
+		}
+
+		keysPressed[key] = true;
+
+		//more accurate hit time for the ratings? part 2 (Now that the calculations are done, go back to the time it was before for not causing a note stutter)
+		Conductor.songPosition = lastTime;
+
+		var spr:StrumNote = playerStrums.members[key];
+		if(strumsBlocked[key] != true && spr != null && spr.animation != null && spr.animation.curAnim.name != 'confirm')
+		{
+			spr.playAnim('pressed');
+			spr.resetAnim = 0;
+		}
+		callOnLuas('onKeyPress', [key]);
 	}
 
 	function sortHitNotes(a:Dynamic, b:Dynamic):Int
@@ -5239,34 +5259,38 @@ class PlayState extends MusicBeatState
 	{
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
-		if(!cpuControlled && startedCountdown && !paused && key > -1)
-		{
-			var spr:StrumNote = playerStrums.members[key];
-			if(spr != null)
-			{
-				spr.playAnim('static');
-				spr.resetAnim = 0;
-				spr.resetRGB();
-			}
-			callOnLuas('onKeyRelease', [key]);
-		}
+		// trace('Pressed: ' + eventKey);
+
+		if (!ClientPrefs.controllerMode && key > -1)
+			keyReleased(key);
 	}
 
-	private function getKeyFromEvent(key:FlxKey):Int
+	private function keyReleased(key:Int)
 	{
-		if(key != NONE)
+		if (cpuControlled || !startedCountdown || paused)
+			return;
+
+		var spr:StrumNote = playerStrums.members[key];
+		if (spr != null)
 		{
+			spr.playAnim('static');
+			spr.resetAnim = 0;
+		}
+		callOnLuas('onKeyRelease', [key]);
+	}
+
+	public function getKeyFromEvent(key:FlxKey):Int
+	{
+		if (key != NONE)
 			for (i in 0...keysArray.length)
 			{
 				for (j in 0...keysArray[i].length)
 				{
-					if(key == keysArray[i][j])
-					{
+					if (key == keysArray[i][j])
 						return i;
-					}
 				}
 			}
-		}
+
 		return -1;
 	}
 
@@ -5274,19 +5298,20 @@ class PlayState extends MusicBeatState
 	private function keyShit():Void
 	{
 		// HOLDING
-		var parsedHoldArray:Array<Bool> = parseKeys();
-		strumsHeld = parsedHoldArray;
+		var holdArray:Array<Bool> = parseKeys();
+		var pressArray:Array<Bool> = parseKeys('_P');
+		var releaseArray:Array<Bool> = parseKeys('_R');
+		strumsHeld = holdArray;
 		strumHeldAmount = strumsHeld.filter(function(value) return value).length;
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
 		if(ClientPrefs.controllerMode)
 		{
-			var parsedArray:Array<Bool> = parseKeys('_P');
-			if(parsedArray.contains(true))
+			if(pressArray.contains(true))
 			{
-				for (i in 0...parsedArray.length)
+				for (i in 0...pressArray.length)
 				{
-					if(parsedArray[i] && strumsBlocked[i] != true)
+					if(pressArray[i] && strumsBlocked[i] != true)
 						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
 				}
 			}
@@ -5300,7 +5325,7 @@ class PlayState extends MusicBeatState
 			for (group in [notes, sustainNotes]) group.forEachAlive(function(daNote:Note)
 			{
 				// hold note functions
-				if (!usingBotEnergy && strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && parsedHoldArray[daNote.noteData] && daNote.canBeHit
+				if (!usingBotEnergy && strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && holdArray[daNote.noteData] && daNote.canBeHit
 				&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit) {
 					goodNoteHit(daNote);
 				}
@@ -5318,7 +5343,7 @@ class PlayState extends MusicBeatState
 				else trace ('Character doesnt have a hey animation!');
 			}
 
-			if (!parsedHoldArray.contains(true) || endingSong) {
+			if (!holdArray.contains(true) || endingSong) {
 				if (ClientPrefs.charsAndBG) playerDance();
 			}
 
@@ -5330,12 +5355,11 @@ class PlayState extends MusicBeatState
 		// TO DO: Find a better way to handle controller inputs, this should work for now
 		if(ClientPrefs.controllerMode || strumsBlocked.contains(true))
 		{
-			var parsedArray:Array<Bool> = parseKeys('_R');
-			if(parsedArray.contains(true))
+			if(releaseArray.contains(true))
 			{
-				for (i in 0...parsedArray.length)
+				for (i in 0...releaseArray.length)
 				{
-					if(parsedArray[i] || strumsBlocked[i] == true)
+					if(releaseArray[i] || strumsBlocked[i] == true)
 						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_UP, true, true, -1, keysArray[i][0]));
 				}
 			}
