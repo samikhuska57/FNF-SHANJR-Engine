@@ -28,12 +28,6 @@ class StrumNote extends FlxSprite
 			texture = (value != null ? value : "noteskins/NOTE_assets" + Note.getNoteSkinPostfix());
 			reloadNote();
 		}
-		/*
-		else if (_frame == null){
-			texture = "noteskins/NOTE_assets" + Note.getNoteSkinPostfix();
-			reloadNote();
-		}
-		*/
 		return value;
 	}
 	public var useRGBShader:Bool = true;
