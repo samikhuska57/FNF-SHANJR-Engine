@@ -5307,12 +5307,11 @@ class PlayState extends MusicBeatState
 		// TO DO: Find a better way to handle controller inputs, this should work for now
 		if(ClientPrefs.controllerMode)
 		{
-			var parsedArray:Array<Bool> = parseKeys('_P');
-			if(parsedArray.contains(true))
+			if(pressArray.contains(true))
 			{
-				for (i in 0...parsedArray.length)
+				for (i in 0...pressArray.length)
 				{
-					if(parsedArray[i] && strumsBlocked[i] != true)
+					if(pressArray[i] && strumsBlocked[i] != true)
 						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
 				}
 			}
@@ -5356,12 +5355,11 @@ class PlayState extends MusicBeatState
 		// TO DO: Find a better way to handle controller inputs, this should work for now
 		if(ClientPrefs.controllerMode || strumsBlocked.contains(true))
 		{
-			var parsedArray:Array<Bool> = parseKeys('_R');
-			if(parsedArray.contains(true))
+			if(releaseArray.contains(true))
 			{
-				for (i in 0...parsedArray.length)
+				for (i in 0...releaseArray.length)
 				{
-					if(parsedArray[i] || strumsBlocked[i] == true)
+					if(releaseArray[i] || strumsBlocked[i] == true)
 						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_UP, true, true, -1, keysArray[i][0]));
 				}
 			}
