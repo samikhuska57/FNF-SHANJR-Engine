@@ -508,19 +508,12 @@ class PlayState extends MusicBeatState
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed', 1);
 		tauntKey = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('qt_taunt'));
 
-		keysArray = [
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_left')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_down')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_up')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_right'))
-		];
+		keysArray = [];
 
-		controlArray = [
-			'NOTE_LEFT',
-			'NOTE_DOWN',
-			'NOTE_UP',
-			'NOTE_RIGHT'
-		];
+		controlArray = ['NOTE_LEFT', 'NOTE_DOWN', 'NOTE_UP', 'NOTE_RIGHT'];
+
+		for (e in controlArray)
+			keysArray.push(ClientPrefs.copyKey(ClientPrefs.keyBinds.get(e.toLowerCase())));
 
 		// For the "Just the Two of Us" achievement
 		for (i in 0...keysArray.length)
@@ -5159,31 +5152,17 @@ class PlayState extends MusicBeatState
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = getKeyFromEvent(keysArray, eventKey);
+		var key:Int = getKeyFromEvent(eventKey);
 
-		if (!ClientPrefs.controllerMode)
-		{
-			#if debug
-			// Prevents crash specifically on debug without needing to try catch shit
-			@:privateAccess if (!FlxG.keys._keyListMap.exists(eventKey))
-				return;
-			#end
-
-			if (FlxG.keys.checkStatus(eventKey, JUST_PRESSED))
-				keyPressed(key);
-		}
+		if (!ClientPrefs.controllerMode && FlxG.keys.checkStatus(eventKey, JUST_PRESSED))
+			keyPressed(key);
 	}
 
 	public var strumsBlocked:Array<Bool> = [];
 	private function keyPressed(key:Int):Void
 	{
-		if (cpuControlled
-			|| paused
-			|| key < 0
-			|| key >= playerStrums.length // idk if this breaks the ek lua script or not
-			|| boyfriend.stunned
-			|| !generatedMusic
-			|| endingSong) return; // no need to just do a nested if statement when you can just do something more simple
+		if(cpuControlled || paused || key < 0) return;
+		if(!generatedMusic || endingSong || boyfriend.stunned) return;
 
 		//more accurate hit time for the ratings?
 		var lastTime:Float = Conductor.songPosition;
@@ -5280,34 +5259,38 @@ class PlayState extends MusicBeatState
 	{
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
-		if(!cpuControlled && startedCountdown && !paused && key > -1)
-		{
-			var spr:StrumNote = playerStrums.members[key];
-			if(spr != null)
-			{
-				spr.playAnim('static');
-				spr.resetAnim = 0;
-				spr.resetRGB();
-			}
-			callOnLuas('onKeyRelease', [key]);
-		}
+		// trace('Pressed: ' + eventKey);
+
+		if (!ClientPrefs.controllerMode && key > -1)
+			keyReleased(key);
 	}
 
-	private function getKeyFromEvent(key:FlxKey):Int
+	private function keyReleased(key:Int)
 	{
-		if(key != NONE)
+		if (cpuControlled || !startedCountdown || paused)
+			return;
+
+		var spr:StrumNote = playerStrums.members[key];
+		if (spr != null)
 		{
+			spr.playAnim('static');
+			spr.resetAnim = 0;
+		}
+		callOnLuas('onKeyRelease', [key]);
+	}
+
+	public function getKeyFromEvent(key:FlxKey):Int
+	{
+		if (key != NONE)
 			for (i in 0...keysArray.length)
 			{
 				for (j in 0...keysArray[i].length)
 				{
-					if(key == keysArray[i][j])
-					{
+					if (key == keysArray[i][j])
 						return i;
-					}
 				}
 			}
-		}
+
 		return -1;
 	}
 
@@ -5315,8 +5298,10 @@ class PlayState extends MusicBeatState
 	private function keyShit():Void
 	{
 		// HOLDING
-		var parsedHoldArray:Array<Bool> = parseKeys();
-		strumsHeld = parsedHoldArray;
+		var holdArray:Array<Bool> = parseKeys();
+		var pressArray:Array<Bool> = parseKeys('_P');
+		var releaseArray:Array<Bool> = parseKeys('_R');
+		strumsHeld = holdArray;
 		strumHeldAmount = strumsHeld.filter(function(value) return value).length;
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
@@ -5341,7 +5326,7 @@ class PlayState extends MusicBeatState
 			for (group in [notes, sustainNotes]) group.forEachAlive(function(daNote:Note)
 			{
 				// hold note functions
-				if (!usingBotEnergy && strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && parsedHoldArray[daNote.noteData] && daNote.canBeHit
+				if (!usingBotEnergy && strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && holdArray[daNote.noteData] && daNote.canBeHit
 				&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit) {
 					goodNoteHit(daNote);
 				}
@@ -5359,7 +5344,7 @@ class PlayState extends MusicBeatState
 				else trace ('Character doesnt have a hey animation!');
 			}
 
-			if (!parsedHoldArray.contains(true) || endingSong) {
+			if (!holdArray.contains(true) || endingSong) {
 				if (ClientPrefs.charsAndBG) playerDance();
 			}
 
