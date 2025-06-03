@@ -24,6 +24,8 @@
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
+	<!-- because you need to rebuild the game everytime you enable tracy -->
+	<set name="BUILD_DIR" value="export/tracy" if="TRACY_ENABLED" />
 
 	<classpath name="source" />
 	
@@ -41,6 +43,10 @@
 
 	<!-- DONT ENABLE THIS!! shut up shadowmario ill enable whatever i want-->
 	<define name="CHECK_FOR_UPDATES" />
+
+	<section if="debug">
+		<!-- <define name="TRACY_ENABLED" if="cpp"/> -->
+	</section>
 
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
@@ -153,6 +159,13 @@
 	<haxedef name="HXCPP_STACK_LINE"/>
 	<haxedef name="HXCPP_STACK_TRACE"/>
 	<haxedef name="HXCPP_CATCH_SEGV" />
+
+	<section if="TRACY_ENABLED">
+		<haxedef name="HXCPP_TELEMETRY"/>
+		<haxedef name="HXCPP_TRACY"/>
+		<haxedef name="HXCPP_TRACY_MEMORY"/>
+		<haxedef name="HXCPP_TRACY_ON_DEMAND"/>
+	</section>
 
 	<!-- Javascript breaks with inline for reasons unknown -->
 	<haxedef name="no-inline" if="html5"/>
