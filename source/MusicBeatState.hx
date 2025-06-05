@@ -1,22 +1,16 @@
 package;
 
-import Conductor.BPMChangeEvent;
-import flixel.FlxG;
-import flixel.addons.ui.FlxUIState;
-import flixel.math.FlxRect;
-import flixel.util.FlxTimer;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.FlxSprite;
-import lime.app.Application;
-import flixel.util.FlxColor;
-import flixel.util.FlxGradient;
-import flixel.FlxState;
-import flixel.FlxCamera;
-import flixel.FlxBasic;
 import backend.PsychCamera;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.ui.FlxUIState;
+import lime.app.Application;
+import openfl.display.BitmapData;
 import openfl.utils.Assets;
+
+@:bitmap("assets/embed/images/cursor.png")
+private class FunkinCursor extends BitmapData {}
 
 class MusicBeatState extends FlxUIState
 {
@@ -70,6 +64,8 @@ class MusicBeatState extends FlxUIState
 			openSubState(new CustomFadeTransition(0.7, true));
 		}
 		FlxTransitionableState.skipNextTransOut = false;
+
+		if(!(FlxG.mouse.cursor?.bitmapData is FunkinCursor)) FlxG.mouse.load(new FunkinCursor(0,0));
 
 		try {windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));}
 		catch(e) {}
