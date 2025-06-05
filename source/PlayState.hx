@@ -137,9 +137,6 @@ class PlayState extends MusicBeatState
 	public var boyfriend:Boyfriend = null;
 	public var bfNoteskin:String = null;
 	public var dadNoteskin:String = null;
-	public static var death:FlxSprite;
-	public static var deathanim:Bool = false;
-	public static var dead:Bool = false;
 
 	public static var iconOffset:Int = 26;
 
