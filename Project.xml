@@ -44,10 +44,6 @@
 	<!-- DONT ENABLE THIS!! shut up shadowmario ill enable whatever i want-->
 	<define name="CHECK_FOR_UPDATES" />
 
-	<section if="debug">
-		<!-- <define name="TRACY_ENABLED" if="cpp"/> -->
-	</section>
-
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 	
@@ -119,7 +115,7 @@
 	<assets path="assets/fonts" />
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="lime" version="8.1.3" />
+	<haxelib name="lime" version="git" />
 	<haxelib name="flixel" version="git" />
 	<haxelib name="flixel-ui" version="2.6.1" />
 	<haxelib name="flixel-addons" version="3.2.3" />
