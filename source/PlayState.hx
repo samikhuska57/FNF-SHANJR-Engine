@@ -5194,19 +5194,8 @@ class PlayState extends MusicBeatState
 				else goodNoteHit(doubleNote); //otherwise, hit doubleNote instead of killing it
 			}
 			goodNoteHit(funnyNote);
-			if (plrInputNotes.length > 1 && ClientPrefs.ezSpam) {
-				// Only hit additional notes that are very close in timing (within ~50ms)
-				var baseTime = funnyNote.strumTime;
-				
-				for (i in 1...plrInputNotes.length) {
-						var note = plrInputNotes[i];
-						// Only hit notes that are very close to the first note's timing
-						if (Math.abs(note.strumTime - baseTime) <= 50.0) { // 50ms window
-								goodNoteHit(note);
-						} else {
-								break; // Stop once we hit notes that are too far apart
-						}
-				}
+			if (plrInputNotes.length > 2 && ClientPrefs.ezSpam) {
+				for (i in 1...plrInputNotes.length) goodNoteHit(plrInputNotes[i]);
 			}
 		}
 		else {
