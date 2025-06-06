@@ -4344,7 +4344,6 @@ class PlayState extends MusicBeatState
 								addCharacterToList(value2, charType);
 							}
 
-							var dadAnim:String = (dad.animation.curAnim != null && dad.animation.curAnim.name.startsWith('sing') ? dad.animation.curAnim.name : '');
 							var wasGf:Bool = dad.curCharacter.startsWith('gf');
 							var lastAlpha:Float = dad.alpha;
 							dad.alpha = 0.00001;
@@ -4366,9 +4365,8 @@ class PlayState extends MusicBeatState
 							if (ClientPrefs.scoreStyle == 'JS Engine' && !ClientPrefs.hideHud)
 								if (scoreTxt != null) FlxTween.color(scoreTxt, 1, scoreTxt.color, FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]));
 
-							if (dadAnim != '') dad.playAnim(dadAnim, true);
-						}
 							if (dad.noteskin != null) dadNoteskin = dad.noteskin;
+						}
 						setOnLuas('dadName', dad.curCharacter);
 
 					case 2:
@@ -4396,11 +4394,14 @@ class PlayState extends MusicBeatState
 				if (ClientPrefs.showNotes)
 				{
 					for (i in strumLineNotes.members)
-						if ((i.player == 0 ? dadNoteskin : bfNoteskin) != null) 
+					{
+						var noteskin:String = (i.player == 0 ? dadNoteskin : bfNoteskin);
+						if (noteskin != null) 
 						{
-							i.updateNoteSkin(i.player == 0 ? dadNoteskin : bfNoteskin);
-							i.useRGBShader = (i.player == 0 ? dadNoteskin : bfNoteskin).length < 1;
+							i.updateNoteSkin(noteskin);
+							i.useRGBShader = noteskin.length < 1 && ClientPrefs.enableColorShader;
 						}
+					}
 				}
 				if (ClientPrefs.noteColorStyle == 'Char-Based')
 				{
