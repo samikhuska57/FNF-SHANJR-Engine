@@ -373,13 +373,6 @@ class VisualsUISubState extends BaseOptionsMenu
 			['Golden Apple', 'Dave and Bambi', 'Old Psych', 'New Psych', 'VS Steve', 'Plank Engine', 'Strident Crisis', 'None']);
 		addOption(option);
 
-		var option:Option = new Option('Rating Accuracy Color',
-			'If checked, the ratings & combo will be colored based on the actual rating.',
-			'colorRatingHit',
-			'bool',
-			true);
-		addOption(option);
-
 		var option:Option = new Option('Health Tweening',
 			"If checked, the health will adjust smoothly.",
 			'smoothHealth',

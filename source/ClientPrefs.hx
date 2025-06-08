@@ -20,8 +20,6 @@ class ClientPrefs { //default settings if it can't find a save file containing y
 	public static var antiCheatEnable:Bool = false;
 	public static var instaRestart:Bool = false;
 	public static var ezSpam:Bool = false;
-	public static var shitGivesMiss:Bool = false;
-	public static var ratingIntensity:String = 'Normal';
 	public static var spaceVPose:Bool = true;
 	public static var ghostTapAnim:Bool = true;
 	public static var hitsoundVolume:Float = 0;
@@ -68,7 +66,6 @@ class ClientPrefs { //default settings if it can't find a save file containing y
 	public static var ratingType:String = 'Default';
 	public static var simplePopups:Bool = false;
 	public static var iconBounceType:String = 'New Psych';
-	public static var colorRatingHit:Bool = true;
 	public static var smoothHealth:Bool = true;
 	public static var smoothHPBug:Bool = false;
 	public static var noBopLimit:Bool = false;
