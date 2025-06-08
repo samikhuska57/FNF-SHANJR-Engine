@@ -54,9 +54,9 @@ class CustomSoundTray extends FlxSoundTray
 		y = -height;
 		screenCenter();
 
-    volumeUpSound = Paths.getPath("sounds/soundtray/Volup.ogg", true);
-    volumeDownSound = Paths.getPath("sounds/soundtray/Voldown.ogg", true);
-    volumeMaxSound = Paths.getPath("sounds/soundtray/VolMAX.ogg", true);
+    volumeUpSound = Paths.getPath("sounds/soundtray/Volup.ogg", 'shared');
+    volumeDownSound = Paths.getPath("sounds/soundtray/Voldown.ogg", 'shared');
+    volumeMaxSound = Paths.getPath("sounds/soundtray/VolMAX.ogg", 'shared');
 
 		// trace('Custom Sound Tray Added!');
 	}

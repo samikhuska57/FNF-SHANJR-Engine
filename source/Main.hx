@@ -8,7 +8,7 @@ import openfl.Lib;
 import openfl.display.Sprite;
 
 using StringTools;
-#if linux
+#if (linux || mac)
 import lime.graphics.Image;
 #end
 
@@ -163,7 +163,7 @@ class Main extends Sprite {
 
 		FlxG.autoPause = false;
 
-		#if linux
+		#if (linux || mac)
 		var icon = Image.fromFile("icon.png");
 		Lib.current.stage.window.setIcon(icon);
 		#end
@@ -191,7 +191,7 @@ class Main extends Sprite {
 
 	static function resetSpriteCache(sprite:Sprite):Void {
 		@:privateAccess {
-		    sprite.__cacheBitmap = null;
+		  sprite.__cacheBitmap = null;
 			sprite.__cacheBitmapData = null;
 		}
 	}

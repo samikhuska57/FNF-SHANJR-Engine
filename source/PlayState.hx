@@ -1183,7 +1183,7 @@ class PlayState extends MusicBeatState
 
 		if (notes.members[0] != null) firstNoteStrumTime = notes.members[0].strumTime;
 
-		camFollow = FlxPoint.get();	
+		camFollow = FlxPoint.get();
 		camFollowPos = new FlxObject();
 
 		snapCamFollowToPos(camPos.x, camPos.y);

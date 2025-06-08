@@ -98,7 +98,7 @@
 	<assets path="assets/preload/models"        library="models"        /> 
 	<assets path="assets/preload/models"        library="models"        />
 
-	<assets path="assets/soundtray"/>
+	<assets path="assets/soundtray" embed="true" />
 
 	<haxelib name="grig.audio"/>
 	<haxelib name="funkin.vis"/>
@@ -106,7 +106,6 @@
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false'/>
 	</section>
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 
 	<!-- OpenAL config -->
 	<section if="desktop">
@@ -185,7 +184,7 @@
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
-	<assets path='art/iconOG.png' rename='icon.png' if="linux" />
+	<assets path='art/iconOG.png' rename='icon.png' if="linux || mac" />
 	
 	<icon path="art/icon16.png" size='16'/>
 	<icon path="art/icon32.png" size='32'/>
