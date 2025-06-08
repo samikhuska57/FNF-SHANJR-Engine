@@ -270,9 +270,9 @@ class ClientPrefs { //default settings if it can't find a save file containing y
 	
 	// i suck at naming things sorry
 	private static var importantMap:Map<String, Array<String>> = [
-		"saveBlackList" => ["keyBinds", "defaultKeys"],
+		"saveBlackList" => ["keyBinds", "defaultKeys", "defaultArrowRGB", "defaultPixelRGB", "defaultQuantRGB"],
 		"flixelSound" => ["volume", "sound"],
-		"loadBlackList" => ["keyBinds", "defaultKeys"],
+		"loadBlackList" => ["keyBinds", "defaultKeys", "defaultArrowRGB", "defaultPixelRGB", "defaultQuantRGB"],
 	];
 
 	public static var defaultArrowRGB:Array<Array<FlxColor>>;
