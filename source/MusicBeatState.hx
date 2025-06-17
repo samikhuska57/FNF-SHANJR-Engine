@@ -6,11 +6,7 @@ import flixel.FlxG;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
 import lime.app.Application;
-import openfl.display.BitmapData;
 import openfl.utils.Assets;
-
-@:bitmap("assets/embed/images/cursor.png")
-private class FunkinCursor extends BitmapData {}
 
 class MusicBeatState extends FlxUIState
 {
@@ -64,8 +60,6 @@ class MusicBeatState extends FlxUIState
 			openSubState(new CustomFadeTransition(0.7, true));
 		}
 		FlxTransitionableState.skipNextTransOut = false;
-
-		if(!(FlxG.mouse.cursor?.bitmapData is FunkinCursor)) FlxG.mouse.load(new FunkinCursor(0,0));
 
 		try {windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));}
 		catch(e) {}
