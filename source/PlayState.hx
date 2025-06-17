@@ -4344,7 +4344,6 @@ class PlayState extends MusicBeatState
 								addCharacterToList(value2, charType);
 							}
 
-							var dadAnim:String = (dad.animation.curAnim != null && dad.animation.curAnim.name.startsWith('sing') ? dad.animation.curAnim.name : '');
 							var wasGf:Bool = dad.curCharacter.startsWith('gf');
 							var lastAlpha:Float = dad.alpha;
 							dad.alpha = 0.00001;
@@ -4366,9 +4365,8 @@ class PlayState extends MusicBeatState
 							if (ClientPrefs.scoreStyle == 'JS Engine' && !ClientPrefs.hideHud)
 								if (scoreTxt != null) FlxTween.color(scoreTxt, 1, scoreTxt.color, FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]));
 
-							if (dadAnim != '') dad.playAnim(dadAnim, true);
-						}
 							if (dad.noteskin != null) dadNoteskin = dad.noteskin;
+						}
 						setOnLuas('dadName', dad.curCharacter);
 
 					case 2:
@@ -4396,11 +4394,14 @@ class PlayState extends MusicBeatState
 				if (ClientPrefs.showNotes)
 				{
 					for (i in strumLineNotes.members)
-						if ((i.player == 0 ? dadNoteskin : bfNoteskin) != null) 
+					{
+						var noteskin:String = (i.player == 0 ? dadNoteskin : bfNoteskin);
+						if (noteskin != null) 
 						{
-							i.updateNoteSkin(i.player == 0 ? dadNoteskin : bfNoteskin);
-							i.useRGBShader = (i.player == 0 ? dadNoteskin : bfNoteskin).length < 1;
+							i.updateNoteSkin(noteskin);
+							i.useRGBShader = noteskin.length < 1 && ClientPrefs.enableColorShader;
 						}
+					}
 				}
 				if (ClientPrefs.noteColorStyle == 'Char-Based')
 				{
@@ -4961,10 +4962,6 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
-
-		if (daRating.name == 'shit' && ClientPrefs.shitGivesMiss && ClientPrefs.ratingIntensity == 'Normal') noteMiss(note);
-		if (noteDiff > ClientPrefs.goodWindow && ClientPrefs.shitGivesMiss && ClientPrefs.ratingIntensity == 'Harsh') noteMiss(note);
-		if (noteDiff > ClientPrefs.sickWindow && ClientPrefs.shitGivesMiss && ClientPrefs.ratingIntensity == 'Very Harsh')noteMiss(note);
 	}
 
 	var separatedScore:Array<Dynamic> = [];
@@ -5005,17 +5002,6 @@ class PlayState extends MusicBeatState
 			if (showRating && ClientPrefs.ratingPopups && !ClientPrefs.simplePopups) {
 				rating = popUpGroup.recycle(Popup);
 				rating.setupRating(pixelShitPart1 + daRating.image + pixelShitPart2);
-				if (!miss && ClientPrefs.colorRatingHit)
-				{
-					switch (daRating.name) //This is so stupid, but it works
-					{
-						case 'sick':  rating.color = FlxColor.CYAN;
-						case 'good': rating.color = FlxColor.LIME;
-						case 'bad': rating.color = FlxColor.ORANGE;
-						case 'shit': rating.color = FlxColor.RED;
-						default: rating.color = FlxColor.WHITE;
-					}
-				}
 				rating.alphaTween();
 				popUpGroup.insert(0, rating);
 			}
@@ -5041,18 +5027,6 @@ class PlayState extends MusicBeatState
 					numScore.setupNumber(pixelShitPart1 + 'num' + i + pixelShitPart2, daLoop, tempComboAlt);
 					if (miss) numScore.color = FlxColor.fromRGB(204, 66, 66);
 					numScore.alphaTween(true);
-
-					if (ClientPrefs.colorRatingHit && !miss)
-					{
-						switch (daRating.name) //This is so stupid, but it works
-						{
-							case 'sick':  numScore.color = FlxColor.CYAN;
-							case 'good': numScore.color = FlxColor.LIME;
-							case 'bad': numScore.color = FlxColor.ORANGE;
-							case 'shit': numScore.color = FlxColor.RED;
-							default: numScore.color = FlxColor.WHITE;
-						}
-					}
 					popUpGroup.insert(0, numScore);
 				}
 			}
@@ -5103,22 +5077,22 @@ class PlayState extends MusicBeatState
 				judgeTxt.alpha = 1;
 				if (!miss) switch (daRating.name)
 				{
-				case 'perfect':
-					judgeTxt.color = FlxColor.YELLOW;
-					judgeTxt.text = hitStrings[0] + '\n' + formatNumber(combo);
-				case 'sick':
-					judgeTxt.color = FlxColor.CYAN;
-					judgeTxt.text = hitStrings[1] + '\n' + formatNumber(combo);
-				case 'good':
-					judgeTxt.color = FlxColor.LIME;
-					judgeTxt.text = hitStrings[2] + '\n' + formatNumber(combo);
-				case 'bad':
-					judgeTxt.color = FlxColor.ORANGE;
-					judgeTxt.text = hitStrings[3] + '\n' + formatNumber(combo);
-				case 'shit':
-					judgeTxt.color = FlxColor.RED;
-					judgeTxt.text = hitStrings[4] + '\n' + formatNumber(combo);
-				default: judgeTxt.color = FlxColor.WHITE;
+					case 'perfect':
+						judgeTxt.color = FlxColor.YELLOW;
+						judgeTxt.text = hitStrings[0] + '\n' + formatNumber(combo);
+					case 'sick':
+						judgeTxt.color = FlxColor.CYAN;
+						judgeTxt.text = hitStrings[1] + '\n' + formatNumber(combo);
+					case 'good':
+						judgeTxt.color = FlxColor.LIME;
+						judgeTxt.text = hitStrings[2] + '\n' + formatNumber(combo);
+					case 'bad':
+						judgeTxt.color = FlxColor.ORANGE;
+						judgeTxt.text = hitStrings[3] + '\n' + formatNumber(combo);
+					case 'shit':
+						judgeTxt.color = FlxColor.RED;
+						judgeTxt.text = hitStrings[4] + '\n' + formatNumber(combo);
+					default: judgeTxt.color = FlxColor.WHITE;
 				}
 				else
 				{
@@ -5194,19 +5168,8 @@ class PlayState extends MusicBeatState
 				else goodNoteHit(doubleNote); //otherwise, hit doubleNote instead of killing it
 			}
 			goodNoteHit(funnyNote);
-			if (plrInputNotes.length > 1 && ClientPrefs.ezSpam) {
-				// Only hit additional notes that are very close in timing (within ~50ms)
-				var baseTime = funnyNote.strumTime;
-				
-				for (i in 1...plrInputNotes.length) {
-						var note = plrInputNotes[i];
-						// Only hit notes that are very close to the first note's timing
-						if (Math.abs(note.strumTime - baseTime) <= 50.0) { // 50ms window
-								goodNoteHit(note);
-						} else {
-								break; // Stop once we hit notes that are too far apart
-						}
-				}
+			if (plrInputNotes.length > 2 && ClientPrefs.ezSpam) {
+				for (i in 1...plrInputNotes.length) goodNoteHit(plrInputNotes[i]);
 			}
 		}
 		else {
