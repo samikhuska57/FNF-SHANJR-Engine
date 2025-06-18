@@ -148,7 +148,7 @@ class ChartingState extends MusicBeatState
 
 	public static inline var GRID_SIZE:Int = 40;
 	var CAM_OFFSET:Int = 360;
-	
+
 	var selectionNote:SelectionNote;
 	var selectionEvent:FlxSprite;
 
@@ -286,8 +286,7 @@ class ChartingState extends MusicBeatState
 				event7: '',
 				event7Value: '',
 				speed: 1,
-				stage: 'stage',
-				validScore: false,
+				stage: 'stage'
 			};
 			addSection();
 			PlayState.SONG = _song;
@@ -295,9 +294,9 @@ class ChartingState extends MusicBeatState
 		difficulty = CoolUtil.currentDifficulty;
 		specialAudioName = _song.specialAudioName;
 		specialEventsName = _song.specialEventsName;
-		hitsound = FlxG.sound.load(Paths.sound("hitsounds/" + 'osu!mania'));
+		hitsound = FlxG.sound.load(Paths.sound("hitsounds/osu!mania"));
 		hitsound.volume = 1;
-		
+
 		if (Note.globalRgbShaders.length > 0) Note.globalRgbShaders = [];
 		Paths.initDefaultSkin(_song.arrowSkin, true);
 
@@ -375,7 +374,7 @@ class ChartingState extends MusicBeatState
 
 		leftIcon.setPosition(GRID_SIZE + 10, -100);
 		rightIcon.setPosition(GRID_SIZE * 5.2, -100);
-		
+
 		selectionNote = new SelectionNote(0, 0, 0);
 		selectionNote.visible = false;
 		var skin:String = Note.defaultNoteSkin + Note.getNoteSkinPostfix();
@@ -559,7 +558,7 @@ class ChartingState extends MusicBeatState
 				var sec:Int = 1;
 				var lastSecStartTime:Float = 0;
 				while(!foundSection)
-				{	
+				{
 					var secStartTime = sectionStartTime(sec);
 					if (FlxG.sound.music.time >= lastSecStartTime && FlxG.sound.music.time <= secStartTime)
 					{
@@ -646,7 +645,7 @@ class ChartingState extends MusicBeatState
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
-			openSubState(new Prompt('This action will clear current progress.\n\nProceed?', 0, function() 
+			openSubState(new Prompt('This action will clear current progress.\n\nProceed?', 0, function()
 			{loadJson(_song.song.toLowerCase(), difficulty); }, null,ignoreWarnings));
 		});
 
@@ -928,13 +927,13 @@ class ChartingState extends MusicBeatState
 		//
 		gameOverCharacterInputText = new FlxUIInputText(10, winNameInputText.y + 30, 150, _song.gameOverChar != null ? _song.gameOverChar : '', 8);
 		blockPressWhileTypingOn.push(gameOverCharacterInputText);
-		
+
 		gameOverSoundInputText = new FlxUIInputText(10, gameOverCharacterInputText.y + 35, 150, _song.gameOverSound != null ? _song.gameOverSound : '', 8);
 		blockPressWhileTypingOn.push(gameOverSoundInputText);
-		
+
 		gameOverLoopInputText = new FlxUIInputText(10, gameOverSoundInputText.y + 35, 150, _song.gameOverLoop != null ? _song.gameOverLoop : '', 8);
 		blockPressWhileTypingOn.push(gameOverLoopInputText);
-		
+
 		gameOverEndInputText = new FlxUIInputText(10, gameOverLoopInputText.y + 35, 150, _song.gameOverEnd != null ? _song.gameOverEnd : '', 8);
 		blockPressWhileTypingOn.push(gameOverEndInputText);
 		//
@@ -1125,7 +1124,7 @@ class ChartingState extends MusicBeatState
 		});
 		clearSectionButton.color = FlxColor.RED;
 		clearSectionButton.label.color = FlxColor.WHITE;
-		
+
 		check_notesSec = new FlxUICheckBox(10, clearSectionButton.y + 25, null, null, "Notes", 100);
 		check_notesSec.checked = true;
 		check_eventsSec = new FlxUICheckBox(check_notesSec.x + 100, check_notesSec.y, null, null, "Events", 100);
@@ -1187,7 +1186,7 @@ class ChartingState extends MusicBeatState
 		});
 		copyLastButton.setGraphicSize(80, 30);
 		copyLastButton.updateHitbox();
-		
+
 		stepperCopy = new FlxUINumericStepper(copyLastButton.x + 100, copyLastButton.y, 1, 1, -999, 999, 0);
 		blockPressWhileTypingOnStepper.push(stepperCopy);
 
@@ -1307,7 +1306,7 @@ class ChartingState extends MusicBeatState
 			var value2:Int = Std.int(CopyFutureSectionCount.value) * Std.int(CopyLoopCount.value);
 			if(value1 == 0) {
 			return;
-			} 
+			}
 			if(_song.notes[curSection] != null && Math.isNaN(_song.notes[daSec].sectionNotes.length)) {
 				trace ("HEY! your section doesn't have any notes! please place at least 1 note then try using this.");
 				return; //prevent a crash if the section doesn't have any notes
@@ -1353,7 +1352,7 @@ class ChartingState extends MusicBeatState
 			var value:Int = Std.int(CopyNextSectionCount.value);
 			if(value == 0) {
 			return;
-			} 
+			}
 			if(_song.notes[curSec] == null || _song.notes[curSec] != null && _song.notes[curSec].sectionNotes.length < 1 || Math.isNaN(_song.notes[curSec].sectionNotes.length) || _song.notes[curSec].sectionNotes == null) {
 			trace ("HEY! your section doesn't have any notes! please place at least 1 note then try using this.");
 			return; //prevent a crash if the section doesn't have any notes
@@ -1391,7 +1390,7 @@ class ChartingState extends MusicBeatState
 			var sectionsToDelete:Int = endSec - startSec;
 			if(sectionsToDelete < 0) {
 			return;
-			} 
+			}
 			saveUndo(_song); //I don't even know why.
 
 			var deleteBfNotes:Bool = FlxG.keys.pressed.SHIFT;
@@ -1399,7 +1398,7 @@ class ChartingState extends MusicBeatState
 
 			for(i in 0...sectionsToDelete) {
 				if (_song.notes[startSec + i] != null && _song.notes[startSec + i].sectionNotes != null)
-					if (!deleteBfNotes && !deleteOppNotes) 
+					if (!deleteBfNotes && !deleteOppNotes)
 						_song.notes[startSec + i].sectionNotes = [];
 					else {
 						var b = _song.notes[startSec + i].sectionNotes.length - 1;
@@ -1733,7 +1732,7 @@ class ChartingState extends MusicBeatState
 		tab_group_stacking.add(shrinkNotesButton);
 		tab_group_stacking.add(shiftNotesButton);
 		tab_group_stacking.add(dupeNotesButton);
-		
+
 		tab_group_stacking.add(new FlxText(100, 30, 0, "Spam Count"));
 		tab_group_stacking.add(new FlxText(100, 80, 0, "Spam Multiplier"));
 		tab_group_stacking.add(new FlxText(100, 140, 0, "Spam Scroll Amount"));
@@ -2156,11 +2155,11 @@ class ChartingState extends MusicBeatState
 		if (FlxG.save.data.chart_hitsoundVolume == null) FlxG.save.data.chart_hitsoundVolume = 1;
 
 		hitsoundVol = FlxG.save.data.chart_hitsoundVolume;
-		
+
 		hitsoundVolume = new FlxUINumericStepper(voicesVolume.x + 100, voicesVolume.y + 30, 0.1, hitsoundVol, 0, 1, 1);
 		hitsoundVolume.name = 'hitsound_volume';
 		blockPressWhileTypingOnStepper.push(hitsoundVolume);
-		
+
 		#if !html5
 		sliderRate = new FlxUISlider(this, 'playbackSpeed', 120, 120, 0.25, 4, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 		sliderRate.nameLabel.text = 'Playback Rate';
@@ -2174,7 +2173,7 @@ class ChartingState extends MusicBeatState
 		{
 			FlxG.save.data.soundEffects = soundEffectsCheck.checked;
 		};
-		
+
 		idleMusicCheck = new FlxUICheckBox(metronomeOffsetStepper.x + 70, metronomeOffsetStepper.y - 20, null, null, "Idle Music", 100);
 		if (FlxG.save.data.idleMusicAllowed == null) FlxG.save.data.idleMusicAllowed = true;
 		idleMusicCheck.checked = FlxG.save.data.idleMusicAllowed;
@@ -2184,7 +2183,7 @@ class ChartingState extends MusicBeatState
 			idleMusicAllow = FlxG.save.data.idleMusicAllowed;
 			if (!FlxG.sound.music.playing)
 			{
-				if (idleMusicAllow) 
+				if (idleMusicAllow)
 				{
 					if (!idleMusic.musicPaused) idleMusic.playMusic();
 					else idleMusic.unpauseMusic(0.3);
@@ -2237,7 +2236,7 @@ class ChartingState extends MusicBeatState
 	{
 		pauseVocals();
 		if(vocals != null) vocals.time = FlxG.sound.music.time;
-		
+
 		if(opponentVocals != null) opponentVocals.time = FlxG.sound.music.time;
 	}
 
@@ -2719,7 +2718,7 @@ class ChartingState extends MusicBeatState
 					return;
 				}
 				else
-				openSubState(new Prompt('WARNING! This action will clear unsaved progress.\n\nProceed?', 0, 
+				openSubState(new Prompt('WARNING! This action will clear unsaved progress.\n\nProceed?', 0,
 					function() FlxG.switchState(editors.MasterEditorMenu.new), null,ignoreWarnings));
 			}
 
@@ -2728,7 +2727,7 @@ class ChartingState extends MusicBeatState
 				if (FlxG.keys.justPressed.Z)
 					undo();
 			}
-			
+
 			if(FlxG.keys.justPressed.Z && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
 				--curZoom;
 				updateZoom();
@@ -2959,7 +2958,7 @@ class ChartingState extends MusicBeatState
 					if (idleMusic != null && idleMusic.music != null && idleMusicAllow) idleMusic.unpauseMusic(2);
 
 					updateCurStep();
-					
+
 					var time:Float = FlxG.sound.music.time;
 					var beat:Float = curDecBeat;
 					var snap:Float = quantization / 4;
@@ -3076,7 +3075,7 @@ class ChartingState extends MusicBeatState
 		opponentVocals.pitch = playbackSpeed;
 		#end
 
-		if (bpmTxt != null) 
+		if (bpmTxt != null)
 		{
 			bpmTxt.text =
 			CoolUtil.formatTime(Conductor.songPosition, 2) + ' / ' + CoolUtil.formatTime(FlxG.sound.music.length, 2) +
@@ -3086,7 +3085,7 @@ class ChartingState extends MusicBeatState
 			"\nBeat Snap: " + quantization + "th" +
 			"\n\n" + FlxStringUtil.formatMoney(CoolUtil.getNoteAmount(_song), false) + ' Notes' +
 			"\n\nRendered Notes: " + FlxStringUtil.formatMoney(Math.abs(curRenderedNotes.length + nextRenderedNotes.length), false);
-			
+
 			if (_song.notes[curSec] != null) bpmTxt.text += "\n\nSection Notes: " + FlxStringUtil.formatMoney(_song.notes[curSec].sectionNotes.length, false);
 		}
 
@@ -3131,15 +3130,15 @@ class ChartingState extends MusicBeatState
 
 						data = note.noteData;
 						if (note.mustPress && lilBuddiesBox.checked) {
-						if (ClientPrefs.enableColorShader || ClientPrefs.showNotes && ClientPrefs.enableColorShader) 
+						if (ClientPrefs.enableColorShader || ClientPrefs.showNotes && ClientPrefs.enableColorShader)
 						{
 							lilBf.color = note.rgbShader.r;
 						}
 						lilBf.animation.play("" + (data % 4), true);
 						}
-						if (!note.mustPress && lilBuddiesBox.checked) 
+						if (!note.mustPress && lilBuddiesBox.checked)
 						{
-							if (ClientPrefs.enableColorShader || ClientPrefs.showNotes && ClientPrefs.enableColorShader) 
+							if (ClientPrefs.enableColorShader || ClientPrefs.showNotes && ClientPrefs.enableColorShader)
 							{
 								lilOpp.color = note.rgbShader.r;
 							}
@@ -3185,7 +3184,7 @@ class ChartingState extends MusicBeatState
 	var lastSecBeatsNext:Float = 0;
 	function reloadGridLayer() {
 		gridLayer.clear();
-		if (showTheGrid) 
+		if (showTheGrid)
 			gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 9, Std.int(GRID_SIZE * getSectionBeats() * 4 * zoomList[curZoom]));
 		else gridBG = new FlxSprite().makeGraphic(Std.int(GRID_SIZE * 9), Std.int(GRID_SIZE * getSectionBeats() * 4 * zoomList[curZoom]), 0xffe7e6e6);
 
@@ -3209,7 +3208,7 @@ class ChartingState extends MusicBeatState
 			}
 		}
 		if (foundNextSec) nextGridBG.y = gridBG.height;
-		
+
 		if (nextGridBG != null) gridLayer.add(nextGridBG);
 		gridLayer.add(gridBG);
 
@@ -3531,7 +3530,7 @@ class ChartingState extends MusicBeatState
 			var blah1:Float = getSectionBeats();
 			var blah2:Float = getSectionBeats(curSec + 1);
 			if(sectionStartTime(1) > FlxG.sound.music.length) blah2 = 0;
-	
+
 			if(blah1 != lastSecBeats || blah2 != lastSecBeatsNext)
 			{
 				reloadGridLayer();
@@ -3668,7 +3667,7 @@ class ChartingState extends MusicBeatState
 				}
 			});
 			curRenderedEventText.clear();
-			if (andNext) 
+			if (andNext)
 				{
 					nextRenderedNotes.forEach(event -> {
 						if (event.noteData == -1)
@@ -3699,7 +3698,7 @@ class ChartingState extends MusicBeatState
 			});
 			curRenderedNoteType.clear();
 			//Why did i remove this?
-			if (andNext) 
+			if (andNext)
 			{
 			nextRenderedNotes.forEach(TheNoteThatShouldBeKilledBecauseWeDontNeedIt -> {
 				nextRenderedNotes.remove(TheNoteThatShouldBeKilledBecauseWeDontNeedIt, true);
@@ -3780,13 +3779,13 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		if (andNext) 
+		if (andNext)
 		{
 			if (!onlyEvents)
 			{
 				// NEXT SECTION, which shouldnt even update if you're in the current section
 				var beats:Float = getSectionBeats(1);
-				if(curSec < _song.notes.length-1) 
+				if(curSec < _song.notes.length-1)
 				{
 					for (i in _song.notes[curSec+1].sectionNotes)
 					{
@@ -3992,14 +3991,14 @@ class ChartingState extends MusicBeatState
 			}
 		}
 		curRenderedNoteType.forEach(txt -> {
-			if (txt.sprTracker == note) 
+			if (txt.sprTracker == note)
 			{
 				curRenderedNoteType.remove(txt, true);
 				txt.destroy();
 			}
 		});
 		curRenderedEventText.forEach(txt -> {
-			if (txt.sprTracker == note) 
+			if (txt.sprTracker == note)
 			{
 				curRenderedEventText.remove(txt, true);
 				txt.destroy();
@@ -4084,9 +4083,9 @@ class ChartingState extends MusicBeatState
 		strumTimeInputText.text = '' + curSelectedNote[0];
 		//wow its not laggy who wouldve guessed
 		if (gridUpdate) {
-			switch (noteData) 
+			switch (noteData)
 			{
-				case -1: 
+				case -1:
 					var note:Note = setupNoteData(curSelectedNote, false);
 					curRenderedNotes.add(note);
 
@@ -4150,7 +4149,7 @@ class ChartingState extends MusicBeatState
 		if(!doZoomCalc) leZoom = 1;
 		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height * leZoom);
 	}
-	
+
 	function getYfromStrumNotes(strumTime:Float, beats:Float):Float
 	{
 		var value:Float = strumTime / (beats * 4 * Conductor.stepCrochet);
@@ -4228,12 +4227,12 @@ class ChartingState extends MusicBeatState
 	private function saveLevel(?compressed:Bool = false, ?isAuto:Bool = false)
 	{
 		Paths.gc(true);
-		if (CoolUtil.getNoteAmount(_song) > 1000000) 
+		if (CoolUtil.getNoteAmount(_song) > 1000000)
 		{
 			cpp.vm.Gc.enable(false);
 		}
 		if(_song.events != null && _song.events.length > 1) _song.events.sort(sortByTime);
-		
+
 		final json = {
 			"song": _song
 		};
@@ -4283,7 +4282,7 @@ class ChartingState extends MusicBeatState
 				File.saveContent('backups/${gamingName}_$dateNow.json', data.trim());
 			}
 		}
-		
+
 		cpp.vm.Gc.enable(true);
 		unsavedChanges = false;
 		if (autoSaveTimer != null) autoSaveTimer.reset(autoSaveLength);
@@ -4352,7 +4351,7 @@ class ChartingState extends MusicBeatState
 	{
 		if (section == null) section = curSec;
 		var val:Null<Float> = null;
-		
+
 		if(_song.notes[section] != null) val = _song.notes[section].sectionBeats;
 		return val != null ? val : 4;
 	}
@@ -4415,7 +4414,7 @@ class SelectionNote extends FlxSprite
 	public var noteData:Int = 0;
 	public var size:Int = 40;
 	public var useRGBShader:Bool = true;
-	
+
 	public var texture(default, set):String = null;
 	private function set_texture(value:String):String {
 		if(texture != value) {
@@ -4534,7 +4533,7 @@ class SelectionNote extends FlxSprite
 	}
 	public function updateRGBColors() {
 		if (rgbShader == null || rgbShader != null && !rgbShader.enabled) return;
-		
+
 		var arr:Array<FlxColor> = ClientPrefs.arrowRGB[noteData];
 		if(PlayState.isPixelStage) arr = ClientPrefs.arrowRGBPixel[noteData];
 		if(noteData <= arr.length)
