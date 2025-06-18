@@ -906,7 +906,7 @@ class ChartingState extends MusicBeatState
                     final json:SwagSong = Song.parseJSONshit(f);
 
                     if (json.song == null) {
-                        CoolUtil.coolError("Failed to load JSON, are you trying to load a events.json instead of a chart.json?", "JS Engine Anti-Crash Tool");
+                        CoolUtil.coolError("Failed to load JSON, Likely because you're loading something other than a chart.json or has an unknown error", "JS Engine Anti-Crash Tool");
                         return;
                     }
 
