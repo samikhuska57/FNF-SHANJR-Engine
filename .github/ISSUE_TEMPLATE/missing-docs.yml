@@ -16,7 +16,7 @@ body:
       
   - type: textarea
     attributes:
-      label: What needs to be documented?
+      label: 'What needs to be documented?'
       description: 'If you choose the "Other" option above, please specify on what tab you're talking about.'
     validations:
       required: true
