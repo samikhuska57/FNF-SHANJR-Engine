@@ -288,8 +288,7 @@ class ChartingState extends MusicBeatState
 				event7: '',
 				event7Value: '',
 				speed: 1,
-				stage: 'stage',
-				validScore: false,
+				stage: 'stage'
 			};
 			addSection();
 			PlayState.SONG = _song;
@@ -297,7 +296,7 @@ class ChartingState extends MusicBeatState
 		difficulty = CoolUtil.currentDifficulty;
 		specialAudioName = _song.specialAudioName;
 		specialEventsName = _song.specialEventsName;
-		hitsound = FlxG.sound.load(Paths.sound("hitsounds/" + 'osu!mania'));
+		hitsound = FlxG.sound.load(Paths.sound("hitsounds/osu!mania"));
 		hitsound.volume = 1;
 
 		if (Note.globalRgbShaders.length > 0) Note.globalRgbShaders = [];
