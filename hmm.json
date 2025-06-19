@@ -79,6 +79,13 @@
       "ref": "master",
       "url": "https://github.com/th2l-devs/linc_luajit"
     },
+    {
+      "name": "tjson",
+      "type": "git",
+      "dir":  null,
+      "ref": "master",
+      "url": "https://github.com/moxie-coder/tjson"
+    },
    {
       "name": "funkin.vis",
       "type": "git",
@@ -99,13 +106,6 @@
       "dir":  null,
       "ref": "master",
       "url": "https://github.com/moxie-coder/away3d"
-    },
-    {
-      "name": "tjson",
-      "type": "git",
-      "dir":  null,
-      "ref": "master",
-      "url": "https://github.com/moxie-coder/tjson"
     }
   ]
 }
