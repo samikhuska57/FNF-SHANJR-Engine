@@ -5967,6 +5967,8 @@ class PlayState extends MusicBeatState
 
 	public function destroyNotes():Void
 	{
+		if (ClientPrefs.fastNoteSpawn) return;
+
 		final iterator:Iterator<Note> = killNotes.iterator();
 
 		while (iterator.hasNext())
