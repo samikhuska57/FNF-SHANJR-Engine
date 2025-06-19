@@ -59,16 +59,16 @@ class HealthIcon extends FlxSprite
 
 			updateHitbox();
 			*/
-			if (graphic.width == 300) {
-				loadGraphic(graphic, true, Math.floor(graphic.width / 2), Math.floor(graphic.height));
+			if (file.width == 300) {
+				loadGraphic(file, true, Math.floor(file.width / 2), Math.floor(file.height));
 				iconOffsets[0] = (width - 150) / iSize;
 				iconOffsets[1] = (height - 150) / iSize;
 				initialWidth = width;
 				initialHeight = height;
 				updateHitbox();
-				animation.add(char, [0, 1, 0], 0, false, isPlayer);
-			} else if (graphic.width == 450) {
-				loadGraphic(graphic, true, Math.floor(graphic.width / 3), Math.floor(graphic.height));
+				animation.add(char, [0, 1], 0, false, isPlayer);
+			} else if (file.width == 450) {
+				loadGraphic(file, true, Math.floor(file.width / 3), Math.floor(file.height));
 				iconOffsets[0] = (width - 150) / iSize;
 				iconOffsets[1] = (height - 150) / iSize;
 				initialWidth = width;
@@ -76,20 +76,24 @@ class HealthIcon extends FlxSprite
 				updateHitbox();
 				animation.add(char, [0, 1, 2], 0, false, isPlayer);
 			} else { // This is just an attempt for other icon support, will detect is less than 300 or more than 300. If 300 or less, only 2 icons, if more, 3 icons.
-				var num:Int = 2;
-				if (graphic.width < 300) {
+				var num:Int = Std.int(Math.round(file.width / file.height));
+				if (file.width % file.height != 0) {
+						// weird icon, maybe has padding?
+						num = 3; // fallback
+				}
+				if (file.width < 300) {
 					num = 2;
-				} else if (graphic.width >= 300) {
+				} else if (file.width >= 300) {
 					num = 3;
 				}
 
-				loadGraphic(graphic, true, Math.floor(graphic.width / num), Math.floor(graphic.height));
+				loadGraphic(file, true, Math.floor(file.width / num), Math.floor(file.height));
 				iconOffsets[0] = (width - 150) / iSize;
 				iconOffsets[1] = (height - 150) / iSize;
 				initialWidth = width;
 				initialHeight = height;
 				updateHitbox();
-				animation.add(char, num == 2 ? [0, 1, 0] : [0, 1, 2], 0, false, isPlayer);
+				animation.add(char, num == 2 ? [0, 1] : [0, 1, 2], 0, false, isPlayer);
 			}
 
 			// animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);

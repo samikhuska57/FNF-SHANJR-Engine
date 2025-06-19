@@ -640,8 +640,10 @@ class PlayState extends MusicBeatState
 				camera_girlfriend: [0, 0],
 				camera_speed: 1
 			};
-			boyfriend?.visible = false;
-			dad?.visible = false;
+			if (boyfriend != null)
+				boyfriend.visible = false;
+			if (dad != null)
+				dad.visible = false;
 		}
 
 		stageUI = "normal";
