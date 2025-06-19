@@ -87,7 +87,7 @@ class FunkinLua {
 	public var callbacks:Map<String, Dynamic> = [];
 	public static var customFunctions:Map<String, Dynamic> = [];
 	public static var registeredFunctions:Map<String, Dynamic> = [];
-	
+
 	public function new(script:String, ?scriptCode:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
@@ -285,7 +285,7 @@ class FunkinLua {
 			#end
 			return false;
 		});
-		
+
 		registerFunction("setSpriteShader", function(obj:String, shader:String) {
 			if(!ClientPrefs.shaders) return false;
 
@@ -1306,7 +1306,7 @@ class FunkinLua {
 			cancelTween(tag);
 			if(note < 0) note = 0;
 			var testicle:StrumNote = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
-			
+
 			if(testicle != null) {
 				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {"scale.x": value - 0.3}, duration, {ease: getFlxEaseByString(ease),
 					onComplete: function(twn:FlxTween) {
@@ -1320,7 +1320,7 @@ class FunkinLua {
 			cancelTween(tag);
 			if(note < 0) note = 0;
 			var testicle:StrumNote = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
-			
+
 			if(testicle != null) {
 				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {"scale.y": value - 0.3}, duration, {ease: getFlxEaseByString(ease),
 					onComplete: function(twn:FlxTween) {
@@ -1859,7 +1859,7 @@ class FunkinLua {
 		registerFunction("addAnimationByIndicesLoop", function(obj:String, name:String, prefix:String, indices:String, framerate:Int = 24) {
 			return addAnimByIndices(obj, name, prefix, indices, framerate, true);
 		});
-		
+
 
 		registerFunction("playAnim", function(obj:String, name:String, forced:Bool = false, ?reverse:Bool = false, ?startFrame:Int = 0)
 		{
@@ -2361,7 +2361,7 @@ class FunkinLua {
 			if (text5 == null) text5 = '';
 			luaTrace('' + text1 + text2 + text3 + text4 + text5, true, false);
 		});
-		
+
 		addLocalCallback("close", function() {
 			closed = true;
 			return closed;
@@ -2375,7 +2375,7 @@ class FunkinLua {
 			if (func != null)
 				Lua_helper.add_callback(lua, name, func);
 		}
-		
+
 		#if ACHIEVEMENTS_ALLOWED Achievements.addLuaCallbacks(lua); #end
 
 		registerFunction("changePresence", function(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float) {
@@ -2793,73 +2793,73 @@ class FunkinLua {
 		//SHADER SHIT
 		if (ClientPrefs.shaders) {
 			registerFunction("addChromaticAbberationEffect", function(camera:String,chromeOffset:Float = 0.005) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
-				
+
 			});
-			
+
 			registerFunction("addScanlineEffect", function(camera:String,lockAlpha:Bool=false) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
-				
+
 			});
 			registerFunction("addGrainEffect", function(camera:String,grainSize:Float,lumAmount:Float,lockAlpha:Bool=false) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize,lumAmount,lockAlpha));
-				
+
 			});
 			registerFunction("addTiltshiftEffect", function(camera:String,blurAmount:Float,center:Float) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new TiltshiftEffect(blurAmount,center));
-				
+
 			});
 			registerFunction("addVCREffect", function(camera:String,glitchFactor:Float = 0.0,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new VCRDistortionEffect(glitchFactor,distortion,perspectiveOn,vignetteMoving));
-				
+
 			});
-			
+
 			// shader clear
-			
+
 			registerFunction("clearShadersFromCamera", function(cameraName)
 			{
 				cameraFromString(cameraName).filters = [];
-			});	
-					
+			});
+
 			registerFunction("addWiggleEffect", function(camera:String, effectType:String, waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1, ?verticalStrength:Float = 1, ?horizontalStrength:Float = 1) {
 				PlayState.instance.addShaderToCamera(camera, new WiggleEffectLua(effectType, waveSpeed, waveFrq, waveAmp,
 					verticalStrength, horizontalStrength));
-			});	
-			registerFunction("addGlitchEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {	
+			});
+			registerFunction("addGlitchEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {
 				PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed,waveFrq,waveAmp));
 			});
 			registerFunction("addGlitchShader", function(camera:String,waveAmp:Float = 0.1,waveFrq:Float = 0.1,waveSpeed:Float = 0.1) {
 				PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed,waveFrq,waveAmp));
 			});
 			registerFunction("addPulseEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new PulseEffect(waveSpeed,waveFrq,waveAmp));
-				
+
 			});
 			registerFunction("addDistortionEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new DistortBGEffect(waveSpeed,waveFrq,waveAmp));
-				
+
 			});
 			registerFunction("addInvertEffect", function(camera:String,lockAlpha:Bool=false) {
-				
+
 				PlayState.instance.addShaderToCamera(camera, new InvertColorsEffect(lockAlpha));
-				
+
 			});
 			registerFunction("addGreyscaleEffect", function(camera:String) { //for dem funkies
-				
+
 				PlayState.instance.addShaderToCamera(camera, new GreyscaleEffect());
-				
+
 			});
 			registerFunction("addGrayscaleEffect", function(camera:String) { //for dem funkies
-				
+
 				PlayState.instance.addShaderToCamera(camera, new GreyscaleEffect());
-				
+
 			});
 			registerFunction("add3DEffect", function(camera:String,xrotation:Float=0,yrotation:Float=0,zrotation:Float=0,depth:Float=0) { //for dem funkies
 				PlayState.instance.addShaderToCamera(camera, new ThreeDEffect(xrotation,yrotation,zrotation,depth));
@@ -2867,7 +2867,7 @@ class FunkinLua {
 			registerFunction("addBloomEffect", function(camera:String,intensity:Float = 0.35,blurSize:Float=1.0) {
 				PlayState.instance.addShaderToCamera(camera, new BloomEffect(blurSize/512.0,intensity));
 			});
-			registerFunction("addBlockedGlitchEffect", function(camera:String, res:Float = 1280, time:Float = 1, colorMult:Float = 1, colorTransform:Bool = true) {	
+			registerFunction("addBlockedGlitchEffect", function(camera:String, res:Float = 1280, time:Float = 1, colorMult:Float = 1, colorTransform:Bool = true) {
 				if (colorTransform) PlayState.instance.addShaderToCamera(camera, new BlockedGlitchEffect(res, time, colorMult, colorTransform));
 			});
 			registerFunction("clearEffects", function(camera:String) {
@@ -2887,7 +2887,7 @@ class FunkinLua {
 		registerFunction("stringTrim", function(str:String) {
 			return str.trim();
 		});
-		
+
 		registerFunction("directoryFileList", function(folder:String) {
 			var list:Array<String> = [];
 			#if sys
@@ -2940,7 +2940,7 @@ class FunkinLua {
 	/*
 	public static function registerFunctions():Void {
 		registeredFunctions.clear();
-		
+
 		implement();
 		CustomState.implement();
 		TextFunctions.implement();
@@ -2949,7 +2949,7 @@ class FunkinLua {
 		ReflectionFunctions.implement();
 		DeprecatedFunctions.implement();
 		// #if flxanimate FlxAnimateFunctions.implement(); #end
-		
+
 		#if DISCORD_ALLOWED DiscordClient.implement(); #end
 		// #if TRANSLATIONS_ALLOWED Language.implement(); #end
 		#if ACHIEVEMENTS_ALLOWED Achievements.implement(); #end
@@ -3005,7 +3005,7 @@ class FunkinLua {
 		/*if(Std.isOfType(instance, Map))
 			instance.set(variable,value);
 		else*/
-			
+
 		if(PlayState.instance.variables.exists(variable))
 		{
 			PlayState.instance.variables.set(variable, value);
@@ -3070,7 +3070,7 @@ class FunkinLua {
 		return null;
 	}
 	#end
-	
+
 	function initLuaShader(name:String, ?glslVersion:Int = 120)
 	{
 		if(!ClientPrefs.shaders) return false;
@@ -3088,7 +3088,7 @@ class FunkinLua {
 
 		for(mod in Paths.getGlobalMods())
 			foldersToCheck.insert(0, Paths.mods(mod + '/shaders/'));
-		
+
 		for (folder in foldersToCheck)
 		{
 			if(FileSystem.exists(folder))
@@ -3151,11 +3151,19 @@ class FunkinLua {
 	{
 		switch(spriteType.toLowerCase().trim())
 		{
-			case "texture" | "textureatlas" | "tex":
-				spr.frames = AtlasFrameMaker.construct(image);
+			case "texture", "textureatlas", "tex":
+				case "texture_noaa", "textureatlas_noaa", "tex_noaa":
+					// Deprecated loader — only kept for legacy support
+					// You should use FlxAnimate instead!
+					spr.frames = AtlasFrameMaker.construct(
+						image,
+						null,
+						spriteType.indexOf("_noaa") == -1
+					);
+					trace("Using legacy TextureAtlas loader. Consider migrating to FlxAnimate.");
 
-			case "texture_noaa" | "textureatlas_noaa" | "tex_noaa":
-				spr.frames = AtlasFrameMaker.construct(image, null, true);
+			case 'aseprite' | 'jsoni8':
+				spr.frames = Paths.getAsepriteAtlas(image);
 
 			case "packer" | "packeratlas" | "pac":
 				spr.frames = Paths.getPackerAtlas(image);
@@ -3544,14 +3552,14 @@ class CustomSubstate extends MusicBeatSubstate
 		super.create();
 		PlayState.instance.callOnLuas('onCustomSubstateCreatePost', [name]);
 	}
-	
+
 	public function new(name:String)
 	{
 		CustomSubstate.name = name;
 		super();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
-	
+
 	override function update(elapsed:Float)
 	{
 		PlayState.instance.callOnLuas('onCustomSubstateUpdate', [name, elapsed]);
