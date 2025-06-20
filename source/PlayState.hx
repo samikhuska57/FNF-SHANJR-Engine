@@ -1132,13 +1132,13 @@ class PlayState extends MusicBeatState
 
 		energyBarBG.cameras = energyBar.cameras = energyTxt.cameras = [camHUD];
 
-		sustainNotes = new NoteGroup();
+		sustainNotes = new FlxTypedGroup<Note>();
 		add(sustainNotes);
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
 
-		notes = new NoteGroup();
+		notes = new FlxTypedGroup<Note>();
 		add(notes);
 		notes.visible = sustainNotes.visible = ClientPrefs.showNotes; //that was easier than expected
 
