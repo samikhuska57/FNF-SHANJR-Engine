@@ -110,7 +110,7 @@ class HealthIcon extends FlxSprite
 				playAnim('normal');
 			} else { // This is just an attempt for other icon support, will detect is less than 300 or more than 300. If 300 or less, only 2 icons, if more, 3 icons.
 				var num:Int = Std.int(Math.round(file.width / file.height));
-				if (file.width % file.height != 0) {
+				if (file.width % file.height != 0 || num >= 4) {
 						// weird icon, maybe has padding?
 						num = 3; // fallback
 				}
