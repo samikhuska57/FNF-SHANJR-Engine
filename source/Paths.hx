@@ -657,6 +657,46 @@ class Paths
 		}
 		return false;
 	}
+	// temp shit lol
+	inline static public function exists(key:String, type:AssetType = null, ?library:String)
+	{
+		#if sys
+		if (FileSystem.exists(key)) {
+			return true;
+		}
+		#end
+		
+		if (OpenFlAssets.exists(key, type)) {
+			return true;
+		}
+		return false;
+	}
+
+	inline static public function existsPath(key:String, type:AssetType = null, ?library:String)
+	{
+		#if sys
+		if (FileSystem.exists(getPath(key, type, library))) {
+			return true;
+		}
+		#end
+		
+		if (OpenFlAssets.exists(getPath(key, type, library), type)) {
+			return true;
+		}
+		return false;
+	}
+	
+	inline public static function getContent(path:String) {
+		#if sys
+		if (path.contains(':'))
+			path = path.substring(path.indexOf(':') + 1);
+		if (FileSystem.exists(path))
+			return File.getContent(path);
+		return null;
+		#else
+		return OpenFlAssets.getText(path);
+		#end
+	}
 
 	static public function getAtlas(key:String, ?parentFolder:String = null):FlxAtlasFrames
 	{
