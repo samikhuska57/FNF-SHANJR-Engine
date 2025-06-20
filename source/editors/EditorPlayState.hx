@@ -38,6 +38,7 @@ class EditorPlayState extends MusicBeatState
 
 	public var sustainNotes:FlxTypedGroup<Note>;
 	public var notes:FlxTypedGroup<Note>;
+	public var killNotes:Array<Note> = [];
 	public var unspawnNotes:Array<PreloadedChartNote> = [];
 
 	var generatedMusic:Bool = false;
@@ -131,7 +132,7 @@ class EditorPlayState extends MusicBeatState
 
 		Paths.initDefaultSkin(PlayState.SONG.arrowSkin);
 
-		generateSong(PlayState.SONG.song, startPos);
+		generateSong(startPos);
 
 		scoreTxt = new FlxText(10, FlxG.height - 50, FlxG.width - 20, "Hits: 0 | Misses: 0", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -188,7 +189,7 @@ class EditorPlayState extends MusicBeatState
 	var songHits:Int = 0;
 	var songMisses:Int = 0;
 	var startingSong:Bool = true;
-	private function generateSong(dataPath:String, ?startingPoint:Float = 0):Void
+	private function generateSong(?startingPoint:Float = 0):Void
 	{
 	   		final startTime = Sys.time();
 
@@ -391,9 +392,9 @@ class EditorPlayState extends MusicBeatState
 				notesAddedCount -= (notesAddedCount - unspawnNotes.length);
 
 			while (unspawnNotes[notesAddedCount] != null && unspawnNotes[notesAddedCount].strumTime - Conductor.songPosition < (1500 / PlayState.SONG.speed / unspawnNotes[notesAddedCount].multSpeed)) {
-				if (ClientPrefs.fastNoteSpawn) (unspawnNotes[notesAddedCount].isSustainNote ? sustainNotes : notes).spawnNote(unspawnNotes[notesAddedCount]);
-				else
-					(unspawnNotes[notesAddedCount].isSustainNote ? sustainNotes : notes).recycle(Note).setupNoteData(unspawnNotes[notesAddedCount]);
+				var newNote:Note = new Note();
+				newNote.setupNoteData(unspawnNotes[notesAddedCount]);
+				(unspawnNotes[notesAddedCount].isSustainNote ? sustainNotes : notes).add(newNote);
 
 				notesAddedCount++;
 			}
@@ -784,8 +785,24 @@ class EditorPlayState extends MusicBeatState
 	}
 
 	public function invalidateNote(note:Note):Void {
-		note.exists = note.wasGoodHit = note.hitByOpponent = note.tooLate = note.canBeHit = false; //apparently i have to do this, otherwise the game will still think the note should be hit
-		if (ClientPrefs.fastNoteSpawn) (note.isSustainNote ? sustainNotes : notes).pushToPool(note);
+		if (!killNotes.contains(note))
+			killNotes.push(note);
+	}
+
+	public function destroyNotes():Void
+	{
+		final iterator:Iterator<Note> = killNotes.iterator();
+
+		while (iterator.hasNext())
+		{
+			final note:Note = iterator.next();
+			note.active = note.visible = false;
+			if (!ClientPrefs.lowQuality || !cpuControlled)
+				note.kill();
+			notes.remove(note, true);
+			note.destroy();
+		}
+		killNotes = [];
 	}
 
 	function calculateResetTime(?sustainNote:Bool = false):Float {
