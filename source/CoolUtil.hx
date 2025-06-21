@@ -229,7 +229,7 @@ class CoolUtil
 			var scriptPath = Path.join([exeDir, scriptFileName]);
 			File.saveContent(scriptPath, scriptContent);
 
-			#if mac || linux
+			#if (mac || linux)
 			// Make the script executable on Unix-like systems
 			try {
 					var chmodProcess = new Process("chmod", ["+x", scriptPath]);
