@@ -40,6 +40,7 @@
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
+	<assets path='art/debugThingyMajiggy.bat' rename='Open me to use the debug terminal.bat' />
 
 	<!-- DONT ENABLE THIS!! shut up shadowmario ill enable whatever i want-->
 	<define name="CHECK_FOR_UPDATES" />
