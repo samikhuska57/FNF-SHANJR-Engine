@@ -229,7 +229,7 @@ class CoolUtil
 			var scriptPath = Path.join([exeDir, scriptFileName]);
 			File.saveContent(scriptPath, scriptContent);
 
-			#if mac
+			#if mac || linux
 			// Make the script executable on Unix-like systems
 			try {
 					var chmodProcess = new Process("chmod", ["+x", scriptPath]);
@@ -244,22 +244,8 @@ class CoolUtil
 					Application.current.window.alert("An error occurred during update: " + e);
 					Sys.exit(1);
 			}
-
-			#elseif linux
-			try {
-					var chmodProcess = new Process("chmod", ["+x", scriptPath]);
-					var chmodResult = chmodProcess.exitCode();
-					if (chmodResult != 0) {
-							trace("Error setting script executable permissions: " + chmodResult);
-							Application.current.window.alert("Could not set update script permissions. Please run the game as administrator or manually update.");
-							Sys.exit(1); // Exit with an error code
-					}
-			} catch (e:Dynamic) {
-					trace("Exception while setting script executable permissions: " + e);
-					Application.current.window.alert("An error occurred during update: " + e);
-					Sys.exit(1);
-			}
 			#end
+
 			// Execute the script
 			new Process(scriptPath, []);
 			Sys.exit(0); // Exit the current game instance
