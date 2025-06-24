@@ -1165,7 +1165,7 @@ class PlayState extends MusicBeatState
 		opponentStrums = new FlxTypedGroup<StrumNote>();
 
 		trace ('Loading chart...');
-		generateSong(SONG.song, startOnTime);
+		generateSong(startOnTime);
 
 		callOnLuas('onCreate');
 
@@ -2624,7 +2624,7 @@ class PlayState extends MusicBeatState
 	var assignedFirstData:Bool = false;
 	private var noteTypeMap:Map<String, Bool> = new Map<String, Bool>();
 	private var eventPushedMap:Map<String, Bool> = new Map<String, Bool>();
-	private function generateSong(dataPath:String, ?startingPoint:Float = 0):Void
+	private function generateSong(?startingPoint:Float = 0):Void
 	{
 		var offsetStart = (startingPoint > 0 ? 500 : 0);
 	   	final startTime = haxe.Timer.stamp();
