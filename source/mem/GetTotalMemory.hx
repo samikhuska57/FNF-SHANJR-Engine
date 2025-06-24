@@ -46,7 +46,7 @@ class GetTotalMemory
 	 */
 	public static function getCurrentRSS():Float
 	{
-		return Memory.getMemory();
+		return Memory.gay();
 	}
 }
 #end
