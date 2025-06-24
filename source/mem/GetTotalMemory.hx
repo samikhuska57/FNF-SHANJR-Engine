@@ -1,6 +1,6 @@
 package mem;
 
-import backend.Memory;
+import debug.Memory;
 #if cpp
 import cpp.SizeT;
 
