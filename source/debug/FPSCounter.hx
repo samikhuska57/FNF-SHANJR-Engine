@@ -5,19 +5,22 @@ import openfl.text.TextFormat;
 import flixel.util.FlxStringUtil;
 import lime.system.System;
 import debug.Memory;
+import mem.GetTotalMemory;
 
 class FPSCounter extends TextField
 {
 	public var currentFPS(default, null):Float;
 
-	/**
-		The current memory usage (WARNING: this is NOT your total program memory usage, rather it shows the garbage collector memory)
-	**/
+        /*
+         * The current memory usage (WARNING: This might NOT your total memory usage, rather it might show the garbage collector memory if you aren't running on a C++ platform.)
+         */
 	public var memory(get, never):Float;
 	inline function get_memory():Float
-		return Memory.gay();
+		return GetTotalMemory.getCurrentRSS();
 
-	var mempeak:Float = 0;
+	var mempeak(get, never):Float;
+	inline function get_mempeak():Float
+	        return GetTotalMemory.getPeakRSS();
 
 	@:noCompletion private var times:Array<Float>;
 
@@ -64,8 +67,6 @@ class FPSCounter extends TextField
 			catch (e:Dynamic) { fpsMultiplier = 1.0; }
 		}
 		else fpsMultiplier = 1.0;
-
-		if (memory > mempeak) mempeak = memory;
 
 		currentFPS = Math.min(FlxG.drawFramerate, times.length) / fpsMultiplier;
 		updateText();
