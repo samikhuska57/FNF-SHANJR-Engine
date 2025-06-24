@@ -4,6 +4,7 @@
 # https://haxe.org/download
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
+sudo apt install libgl-dev libx11-dev libxi-dev libxpm-dev libxrandr-dev libncurses-dev
 haxelib git lime https://github.com/th2l-devs/lime --quiet
 haxelib git openfl https://github.com/th2l-devs/openfl --quiet
 haxelib git flixel https://github.com/JS-Engine-things/flixel-JS-Engine --quiet
