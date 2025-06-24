@@ -11,6 +11,17 @@ class FPSCounter extends TextField
 {
 	public var currentFPS(default, null):Float;
 
+        /*
+         * The current memory usage (WARNING: This might NOT your total memory usage, rather it might show the garbage collector memory if you aren't running on a C++ platform.)
+         */
+	public var memory(get, never):Float;
+	inline function get_memory():Float
+		return GetTotalMemory.getCurrentRSS();
+
+	var mempeak(get, never):Float;
+	inline function get_mempeak():Float
+	        return GetTotalMemory.getPeakRSS();
+
 	@:noCompletion private var times:Array<Float>;
 
 	public function new(x:Float = 10, y:Float = 10, color:Int = 0x00000000)
@@ -86,7 +97,7 @@ class FPSCounter extends TextField
 		if (ClientPrefs.ffmpegMode)
 			text += " (Rendering Mode)";
 
-		if (ClientPrefs.showRamUsage) text += "\nMemory: " + FlxStringUtil.formatBytes(GetTotalMemory.getCurrentRSS()) + (ClientPrefs.showMaxRamUsage ? " / " + FlxStringUtil.formatBytes(GetTotalMemory.getPeakRSS()) : "");
+		if (ClientPrefs.showRamUsage) text += "\nMemory: " + FlxStringUtil.formatBytes(memory) + (ClientPrefs.showMaxRamUsage ? " / " + FlxStringUtil.formatBytes(mempeak) : "");
 		if (ClientPrefs.debugInfo)
 		{
 			text += '\nCurrent state: ${Type.getClassName(Type.getClass(FlxG.state))}';
