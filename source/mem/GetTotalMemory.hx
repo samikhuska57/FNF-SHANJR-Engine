@@ -2,6 +2,7 @@ package mem;
 
 import debug.Memory;
 #if cpp
+import cpp.SizeT;
 
 /**
  * Gets the accurate memory counter
@@ -13,10 +14,10 @@ import debug.Memory;
 extern class GetTotalMemory
 {
 	@:native("getPeakRSS")
-	static function getPeakRSS():Float;
+	static function getPeakRSS():SizeT;
 
 	@:native("getCurrentRSS")
-	static function getCurrentRSS():Float;
+	static function getCurrentRSS():SizeT;
 }
 #else
 /**
