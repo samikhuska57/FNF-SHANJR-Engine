@@ -5,19 +5,11 @@ import openfl.text.TextFormat;
 import flixel.util.FlxStringUtil;
 import lime.system.System;
 import debug.Memory;
+import mem.GetTotalMemory;
 
 class FPSCounter extends TextField
 {
 	public var currentFPS(default, null):Float;
-
-	/**
-		The current memory usage (WARNING: this is NOT your total program memory usage, rather it shows the garbage collector memory)
-	**/
-	public var memory(get, never):Float;
-	inline function get_memory():Float
-		return Memory.gay();
-
-	var mempeak:Float = 0;
 
 	@:noCompletion private var times:Array<Float>;
 
@@ -65,8 +57,6 @@ class FPSCounter extends TextField
 		}
 		else fpsMultiplier = 1.0;
 
-		if (memory > mempeak) mempeak = memory;
-
 		currentFPS = Math.min(FlxG.drawFramerate, times.length) / fpsMultiplier;
 		updateText();
 
@@ -96,7 +86,7 @@ class FPSCounter extends TextField
 		if (ClientPrefs.ffmpegMode)
 			text += " (Rendering Mode)";
 
-		if (ClientPrefs.showRamUsage) text += "\nMemory: " + FlxStringUtil.formatBytes(memory) + (ClientPrefs.showMaxRamUsage ? " / " + FlxStringUtil.formatBytes(mempeak) : "");
+		if (ClientPrefs.showRamUsage) text += "\nMemory: " + FlxStringUtil.formatBytes(GetTotalMemory.getCurrentRSS()) + (ClientPrefs.showMaxRamUsage ? " / " + FlxStringUtil.formatBytes(GetTotalMemory.getPeakRSS()) : "");
 		if (ClientPrefs.debugInfo)
 		{
 			text += '\nCurrent state: ${Type.getClassName(Type.getClass(FlxG.state))}';
