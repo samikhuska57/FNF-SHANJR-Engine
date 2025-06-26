@@ -1,19 +1,19 @@
 package debug;
 
-import openfl.text.TextField;
-import openfl.text.TextFormat;
+import debug.Memory;
 import flixel.util.FlxStringUtil;
 import lime.system.System;
-import debug.Memory;
 import mem.GetTotalMemory;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
 
 class FPSCounter extends TextField
 {
 	public var currentFPS(default, null):Float;
 
-        /*
-         * The current memory usage (WARNING: This might NOT your total memory usage, rather it might show the garbage collector memory if you aren't running on a C++ platform.)
-         */
+	/*
+	* The current memory usage (WARNING: This might NOT your total memory usage, rather it might show the garbage collector memory if you aren't running on a C++ platform.)
+	*/
 	public var memory(get, never):Float;
 	inline function get_memory():Float
 		return GetTotalMemory.getCurrentRSS();
