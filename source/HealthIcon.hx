@@ -194,7 +194,7 @@ class HealthIcon extends FlxSprite
 		var json:IconMeta = cast Json.parse(rawJson);
 		if (json.noAntialiasing == null) json.noAntialiasing = false;
 		if (json.fps == null) json.fps = 24;
-		if (json.hasWinIcon == null) json.hasWinIcon = true;
+		if (json.hasWinIcon == null) json.hasWinIcon = false;
 		// if (json.frameOrder == null) json.frameOrder = ['normal', 'losing', 'winning'];
 		return json;
 	}
