@@ -5,8 +5,8 @@
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
 sudo apt install libgl-dev libx11-dev libxi-dev libxpm-dev libxrandr-dev libncurses-dev
-haxelib git lime https://github.com/th2l-devs/lime --quiet
-haxelib git openfl https://github.com/th2l-devs/openfl --quiet
+haxelib git lime https://github.com/th2l-devs/lime 3cf643f416e05eb700e80e4cca6868329793e370 --quiet
+haxelib git openfl https://github.com/th2l-devs/openfl 6160e49a7da61fd8b3f83f1b70f76f07567ad4c7 --quiet
 haxelib git flixel https://github.com/JS-Engine-things/flixel-JS-Engine --quiet
 haxelib install flixel-addons 3.2.3 --quiet
 haxelib install flixel-tools 1.5.1 --quiet
