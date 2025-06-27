@@ -4,14 +4,14 @@
       "name": "lime",
       "type": "git",
       "dir": null,
-      "ref": "3cf643f",
+      "ref": null,
       "url": "https://github.com/th2l-devs/lime"
     },
     {
       "name": "openfl",
       "type": "git",
       "dir": null,
-      "ref": "6160e49",
+      "ref": null,
       "url": "https://github.com/th2l-devs/openfl"
     },
     {
@@ -45,8 +45,10 @@
     },
     {
       "name": "hxvlc",
-      "type": "haxelib",
-      "version": "1.9.2"
+      "type": "git",
+      "dir": null,
+      "ref": null,
+      "url": "https://github.com/th2l-devs/hxvlc"
     },
     {
       "name": "hscript",
