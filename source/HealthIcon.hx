@@ -68,7 +68,7 @@ class HealthIcon extends FlxSprite
 			}
 			var iSize:Float = Math.round(file.width / file.height);
 			// TODO: clean up this fucking mess
-			if (iconMeta?.useLegacySystem || (file.width / file.height >= 2)
+			if (iconMeta?.useLegacySystem || (file.width / file.height >= 2))
 			{
 				if (file.width / file.height >= 2)
 					iSize = Math.floor(file.width / 2);
