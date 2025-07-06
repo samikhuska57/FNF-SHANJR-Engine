@@ -119,7 +119,7 @@
 
 	<haxelib name="lime" />
 	<haxelib name="flixel" />
-	<haxelib name="flixel-ui" version="2.6.1" />
+	<haxelib name="flixel-ui" version="2.6.0" />
 	<haxelib name="flixel-addons" version="3.2.3" />
 	<haxelib name="away3d" />
 
