@@ -2,6 +2,7 @@ package;
 
 import haxe.Json;
 import openfl.utils.Assets;
+import flixel.graphics.FlxGraphic;
 
 using StringTools;
 
@@ -58,53 +59,39 @@ class HealthIcon extends FlxSprite
 			var name:String = 'icons/' + char;
 			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char; //Older versions of psych engine's support
 			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face'; //Prevents crash from missing icon
-			var file:Dynamic = Paths.image(name);
+			var iconAsset:FlxGraphic = FlxG.bitmap.add(Paths.image(name));
 
-			if (file == null)
-				file == Paths.image('icons/icon-face');
+			if (iconAsset == null)
+				iconAsset == Paths.image('icons/icon-face');
 			else if (!Paths.fileExists('images/icons/icon-face.png', IMAGE)){
 				// throw "Don't delete the placeholder icon";
 				trace("Warning: could not find the placeholder icon, expect crashes!");
 			}
-			var iSize:Float = Math.round(file.width / file.height);
-			var delimiter:Int = (Math.floor(file.width / 4) >= file.height) ? 2 : (Math.floor(file.width / 3) >= file.height) ? 3 : 2;
 			// TODO: clean up this fucking mess
-			if (iconMeta?.useLegacySystem || (delimiter >= 4))
+			// yanderedev code
+			final iSize:Float = Math.round(iconAsset.width / iconAsset.height);
+			if (iconMeta?.useLegacySystem)
 			{
-				if (delimiter >= 4 && !iconMeta?.hasWinIcon){
-					//iSize = Math.floor(file.width / 2);
-					loadGraphic(file, true, Math.floor(file.width / delimiter), Math.floor(file.height));
-					initialWidth = width;
-					initialHeight = height;
-					iconOffsets[0] = (width - 150) / delimiter;
-					iconOffsets[1] = (height - 150);
+				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / iSize), Math.floor(iconAsset.height));
+				initialWidth = width;
+				initialHeight = height;
+				iconOffsets[0] = (width - 150) / iSize;
+				iconOffsets[1] = (height - 150) / iSize;
 
-					updateHitbox();
+				updateHitbox();
 
-					animation.add(char, [for (i in 0...numFrames) i], 0, false, isPlayer);
-				}
-				else{
-					loadGraphic(file, true, Math.floor(file.width / iSize), Math.floor(file.height));
-					initialWidth = width;
-					initialHeight = height;
-					iconOffsets[0] = (width - 150) / iSize;
-					iconOffsets[1] = (height - 150) / iSize;
-
-					updateHitbox();
-
-					animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
-				}
+				animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
 			}
-			else if (file.width == 300) {
-				loadGraphic(file, true, Math.floor(file.width / 2), Math.floor(file.height));
+			else if (iconAsset.width == 300) {
+				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / 2), Math.floor(iconAsset.height));
 				iconOffsets[0] = (width - 150) / iSize;
 				iconOffsets[1] = (height - 150) / iSize;
 				initialWidth = width;
 				initialHeight = height;
 				updateHitbox();
 				animation.add(char, [0, 1], 0, false, isPlayer);
-			} else if (file.width == 450) {
-				loadGraphic(file, true, Math.floor(file.width / 3), Math.floor(file.height));
+			} else if (iconAsset.width == 450) {
+				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / 3), Math.floor(iconAsset.height));
 				iconOffsets[0] = (width - 150) / iSize;
 				iconOffsets[1] = (height - 150) / iSize;
 				initialWidth = width;
@@ -129,18 +116,18 @@ class HealthIcon extends FlxSprite
 				animation.addByPrefix('winning', hasWinning ? 'winning' : 'normal', fps, loop, isPlayer);
 				playAnim('normal');
 			} else { // This is just an attempt for other icon support, will detect is less than 300 or more than 300. If 300 or less, only 2 icons, if more, 3 icons.
-				var num:Int = Std.int(Math.round(file.width / file.height));
-				if (file.width % file.height != 0 || num >= 4) {
-						// weird icon, maybe has padding?
-						num = 3; // fallback
+				var num:Int = Std.int(Math.round(iconAsset.width / iconAsset.height));
+				if (iconAsset.width % iconAsset.height != 0 || num >= 4) {
+					// weird icon, maybe has padding?
+					num = 3; // fallback
 				}
-				if (file.width < 300) {
+				if (iconAsset.width < 300) {
 					num = 2;
-				} else if (file.width >= 300) {
+				} else if (iconAsset.width >= 300) {
 					num = 3;
 				}
 
-				loadGraphic(file, true, Math.floor(file.width / num), Math.floor(file.height));
+				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / num), Math.floor(iconAsset.height));
 				iconOffsets[0] = (width - 150) / iSize;
 				iconOffsets[1] = (height - 150) / iSize;
 				initialWidth = width;
