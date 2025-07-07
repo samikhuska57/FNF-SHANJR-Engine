@@ -67,20 +67,33 @@ class HealthIcon extends FlxSprite
 				trace("Warning: could not find the placeholder icon, expect crashes!");
 			}
 			var iSize:Float = Math.round(file.width / file.height);
+			var delimiter:Int = (Math.floor(file.width / 4) >= file.height) ? 2 : (Math.floor(file.width / 3) >= file.height) ? 3 : 2;
 			// TODO: clean up this fucking mess
-			if (iconMeta?.useLegacySystem || (file.width / file.height >= 2))
+			if (iconMeta?.useLegacySystem || (delimiter >= 4))
 			{
-				if (file.width / file.height >= 2)
-					iSize = Math.floor(file.width / 2);
-				loadGraphic(file, true, Math.floor(file.width / iSize), Math.floor(file.height));
-				initialWidth = width;
-				initialHeight = height;
-				iconOffsets[0] = (width - 150) / iSize;
-				iconOffsets[1] = (height - 150) / iSize;
+				if (delimiter >= 4 && !iconMeta?.hasWinIcon){
+					//iSize = Math.floor(file.width / 2);
+					loadGraphic(file, true, Math.floor(file.width / delimiter), Math.floor(file.height));
+					initialWidth = width;
+					initialHeight = height;
+					iconOffsets[0] = (width - 150) / delimiter;
+					iconOffsets[1] = (height - 150);
 
-				updateHitbox();
+					updateHitbox();
 
-				animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
+					animation.add(char, [for (i in 0...numFrames) i], 0, false, isPlayer);
+				}
+				else{
+					loadGraphic(file, true, Math.floor(file.width / iSize), Math.floor(file.height));
+					initialWidth = width;
+					initialHeight = height;
+					iconOffsets[0] = (width - 150) / iSize;
+					iconOffsets[1] = (height - 150) / iSize;
+
+					updateHitbox();
+
+					animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
+				}
 			}
 			else if (file.width == 300) {
 				loadGraphic(file, true, Math.floor(file.width / 2), Math.floor(file.height));
