@@ -13,8 +13,7 @@ typedef IconMeta = {
 	?fps:Int,
 	// ?frameOrder:Array<String> // ["normal", "losing", "winning"]
 	// ?isAnimated:Bool,
-	?hasWinIcon:Bool,
-	?useLegacySystem:Bool
+	?hasWinIcon:Bool
 }
 class HealthIcon extends FlxSprite
 {
@@ -67,38 +66,12 @@ class HealthIcon extends FlxSprite
 				// throw "Don't delete the placeholder icon";
 				trace("Warning: could not find the placeholder icon, expect crashes!");
 			}
-			// TODO: clean up this fucking mess
-			// yanderedev code
-			final iSize:Float = Math.round(iconAsset.width / iconAsset.height);
-			if (iconMeta?.useLegacySystem)
-			{
-				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / iSize), Math.floor(iconAsset.height));
-				initialWidth = width;
-				initialHeight = height;
-				iconOffsets[0] = (width - 150) / iSize;
-				iconOffsets[1] = (height - 150) / iSize;
 
-				updateHitbox();
-
-				animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
-			}
-			else if (iconAsset.width == 300) {
-				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / 2), Math.floor(iconAsset.height));
-				iconOffsets[0] = (width - 150) / iSize;
-				iconOffsets[1] = (height - 150) / iSize;
-				initialWidth = width;
-				initialHeight = height;
-				updateHitbox();
-				animation.add(char, [0, 1], 0, false, isPlayer);
-			} else if (iconAsset.width == 450) {
-				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / 3), Math.floor(iconAsset.height));
-				iconOffsets[0] = (width - 150) / iSize;
-				iconOffsets[1] = (height - 150) / iSize;
-				initialWidth = width;
-				initialHeight = height;
-				updateHitbox();
-				animation.add(char, [0, 1, 2], 0, false, isPlayer);
-			} else if (Paths.fileExists('images/$name.xml', TEXT)) {
+			//cleaned up to be less confusing. also floor is used so iSize has to definitively be 3 to use winning icons
+			final iSize:Float = Math.floor(iconAsset.width / iconAsset.height);
+			initialWidth = width;
+			initialHeight = height;
+			if (Paths.fileExists('images/$name.xml', TEXT)) {
 				frames = Paths.getSparrowAtlas(name);
 				final iconPrefixes = checkAvailablePrefixes(Paths.getPath('images/$name.xml', TEXT));
 				final hasWinning = iconPrefixes.get('winning');
@@ -115,32 +88,16 @@ class HealthIcon extends FlxSprite
 				// Add "winning", fallback to "normal"
 				animation.addByPrefix('winning', hasWinning ? 'winning' : 'normal', fps, loop, isPlayer);
 				playAnim('normal');
-			} else { // This is just an attempt for other icon support, will detect is less than 300 or more than 300. If 300 or less, only 2 icons, if more, 3 icons.
-				var num:Int = Std.int(Math.round(iconAsset.width / iconAsset.height));
-				if (iconAsset.width % iconAsset.height != 0 || num >= 4) {
-					// weird icon, maybe has padding?
-					num = 3; // fallback
+			} else {
+				if (iconMeta?.hasWinIcon || iSize == 3) {
+					loadGraphic(file, true, Math.floor(width / 3), Math.floor(height)); //Then load it fr // winning icons go br
+					iconOffsets[0] = (width - 150) / 3;
+					iconOffsets[1] = (height - 150) / 3;
+				} else {
+					loadGraphic(file, true, Math.floor(width / 2), Math.floor(height)); //Then load it fr // winning icons go br
+					iconOffsets[0] = (width - 150) / 2;
+					iconOffsets[1] = (height - 150) / 2;
 				}
-				if (iconAsset.width < 300) {
-					num = 2;
-				} else if (iconAsset.width >= 300) {
-					num = 3;
-				}
-
-				loadGraphic(iconAsset, true, Math.floor(iconAsset.width / num), Math.floor(iconAsset.height));
-				iconOffsets[0] = (width - 150) / iSize;
-				iconOffsets[1] = (height - 150) / iSize;
-				initialWidth = width;
-				initialHeight = height;
-				updateHitbox();
-
-				function getWinIcon():Array<Int>
-				{
-					return (iconMeta?.hasWinIcon || num == 3) ? [0, 1, 2] : [0, 1];
-				}
-
-				final winShit:Array<Int> = (num == 2) ? [0, 1] : getWinIcon();
-				animation.add(char, winShit, 0, false, isPlayer);
 			}
 
 			// animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
@@ -203,7 +160,6 @@ class HealthIcon extends FlxSprite
 		if (json.noAntialiasing == null) json.noAntialiasing = false;
 		if (json.fps == null) json.fps = 24;
 		if (json.hasWinIcon == null) json.hasWinIcon = false;
-		if (json.useLegacySystem == null) json.useLegacySystem = false;
 		// if (json.frameOrder == null) json.frameOrder = ['normal', 'losing', 'winning'];
 		return json;
 	}
@@ -212,9 +168,9 @@ class HealthIcon extends FlxSprite
 	{
 		if (ClientPrefs.iconBounceType != 'Golden Apple' && ClientPrefs.iconBounceType != 'Dave and Bambi' || !Std.isOfType(FlxG.state, PlayState))
 		{
-		super.updateHitbox();
-		offset.x = iconOffsets[0];
-		offset.y = iconOffsets[1];
+			super.updateHitbox();
+			offset.x = iconOffsets[0];
+			offset.y = iconOffsets[1];
 		} else {
 			super.updateHitbox();
 			if (initialWidth != (150 * animation.numFrames) || initialHeight != 150) //Fixes weird icon offsets when they're HUMONGUS (sussy)
