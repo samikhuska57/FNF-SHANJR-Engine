@@ -181,9 +181,9 @@ class PlayState extends MusicBeatState
 	public var maxCombo:Float = 0;
 	public var missCombo:Int = 0;
 
-		var notesAddedCount:Int = 0;
-		var notesToRemoveCount:Int = 0;
-		var oppNotesToRemoveCount:Int = 0;
+	var notesAddedCount:Int = 0;
+	var notesToRemoveCount:Int = 0;
+	var oppNotesToRemoveCount:Int = 0;
 	public var iconBopsThisFrame:Int = 0;
 	public var iconBopsTotal:Int = 0;
 
@@ -416,22 +416,22 @@ class PlayState extends MusicBeatState
 
 	var theListBotplay:Array<String> = [];
 
-		var formattedScore:String;
-		var formattedSongMisses:String;
-		var formattedCombo:String;
-		var formattedMaxCombo:String;
-		var formattedNPS:String;
-		var formattedMaxNPS:String;
-		var formattedOppNPS:String;
-		var formattedMaxOppNPS:String;
-		var formattedEnemyHits:String;
-		var npsString:String;
-		var accuracy:String;
-		var fcString:String;
-		var hitsound:FlxSound;
+	var formattedScore:String;
+	var formattedSongMisses:String;
+	var formattedCombo:String;
+	var formattedMaxCombo:String;
+	var formattedNPS:String;
+	var formattedMaxNPS:String;
+	var formattedOppNPS:String;
+	var formattedMaxOppNPS:String;
+	var formattedEnemyHits:String;
+	var npsString:String;
+	var accuracy:String;
+	var fcString:String;
+	var hitsound:FlxSound;
 
-		var botText:String;
-		var tempScore:String;
+	var botText:String;
+	var tempScore:String;
 
 	var startingTime:Float = haxe.Timer.stamp();
 	var endingTime:Float = haxe.Timer.stamp();

@@ -1,6 +1,5 @@
 package options;
 
-import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -16,7 +15,6 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxSave;
-import haxe.Json;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
@@ -47,8 +45,10 @@ class OptionsState extends MusicBeatState
 	function openSelectedSubstate(label:String) {
 		switch(label) {
 			case 'Note Colors':
-				if (!ClientPrefs.enableColorShader) CoolUtil.coolError("It appears that you don't have the 'Enable Note Colors' option enabled!\nTo prevent a crash, you cannot access this menu unless you turn the option on.\nYou can find it in the Visuals & UI menu.", "JS Engine Anti-Crash Tool");
-				else openSubState(new options.NotesSubState());
+				if (!ClientPrefs.enableColorShader) 
+					CoolUtil.coolError("It appears that you don't have the 'Enable Note Colors' option enabled!\nTo prevent a crash, you cannot access this menu unless you turn the option on.\nYou can find it in the Visuals & UI menu.", "JS Engine Anti-Crash Tool");
+				else
+					openSubState(new options.NotesSubState());
 			case 'Controls':
 				openSubState(new options.ControlsSubState());
 			case 'Graphics':
@@ -81,6 +81,9 @@ class OptionsState extends MusicBeatState
 		otherCamera = new FlxCamera();
 		subCamera.bgColor.alpha = 0;
 		otherCamera.bgColor.alpha = 0;
+		// proper fix
+		if (onPlayState && PlayState.SONG.disableNoteRGB)
+			options.remove('Note Colors');
 
 		FlxG.cameras.add(subCamera, false);
 		FlxG.cameras.add(otherCamera, false);

@@ -61,7 +61,7 @@ class HealthIcon extends FlxSprite
 			var iconAsset:FlxGraphic = FlxG.bitmap.add(Paths.image(name));
 
 			if (iconAsset == null)
-				iconAsset == Paths.image('icons/icon-face');
+				iconAsset = Paths.image('icons/icon-face');
 			else if (!Paths.fileExists('images/icons/icon-face.png', IMAGE)){
 				// throw "Don't delete the placeholder icon";
 				trace("Warning: could not find the placeholder icon, expect crashes!");
@@ -90,13 +90,23 @@ class HealthIcon extends FlxSprite
 				playAnim('normal');
 			} else {
 				if (iconMeta?.hasWinIcon || iSize == 3) {
-					loadGraphic(file, true, Math.floor(width / 3), Math.floor(height)); //Then load it fr // winning icons go br
+					loadGraphic(iconAsset, true, Math.floor(width / 3), Math.floor(height)); //Then load it fr // winning icons go br
+					initialWidth = width;
+					initialHeight = height;
 					iconOffsets[0] = (width - 150) / 3;
 					iconOffsets[1] = (height - 150) / 3;
+					updateHitbox();
+
+					animation.add(char, [0, 1, 2], 0, false, isPlayer);
 				} else {
-					loadGraphic(file, true, Math.floor(width / 2), Math.floor(height)); //Then load it fr // winning icons go br
+					loadGraphic(iconAsset, true, Math.floor(width / 2), Math.floor(height)); //Then load it fr // winning icons go br
+					initialWidth = width;
+					initialHeight = height;
 					iconOffsets[0] = (width - 150) / 2;
 					iconOffsets[1] = (height - 150) / 2;
+					updateHitbox();
+
+					animation.add(char, [0, 1], 0, false, isPlayer);
 				}
 			}
 
