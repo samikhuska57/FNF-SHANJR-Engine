@@ -3,13 +3,13 @@
   <br>
   <a href="https://github.com/JordanSantiagoYT/FNF-JS-Engine"><img src="/art/iconOG.png" alt="JSengine" width="150"></a>
   <br>
-  <b>JS Engine</b>
+  <b>SHANJR Engine</b>
   <br>
-  <i>(Jordan Santiago Engine)</i>
+  <i>(SHANJR Engine)</i>
   <br>
 </h1>
 <h3 align="center">
-  <b>JS Engine is a heavily modified Psych Engine fork, with lower-end devices and more customization in mind.</b>
+  <b>SHANJR Engine is a heavily modified JS Engine and Psych Engine fork, with lower-end devices and more customization in mind.</b>
 </h3>
 
 <p align="center">
@@ -24,11 +24,11 @@ _If you're looking for the Mobile port, [go here](https://github.com/JordanSanti
 
 ## Welcome
 
-Welcome to JS Engine's github repo, where you can download the engine and make spammy charts or have fun with the engine.
+Welcome to SHANJR Engine's github repo, where you can download the engine and make spammy charts or have fun with the engine.
 
 This contains lots and lots of customizable and features built in to JS Engine, if you wanna see most of them listed, you can see it below this text
 
-# Features/Performances in JS ENGINE
+# Features/Performances in SHANJR ENGINE
 
 **This fork has tons of features and performances features, most will be listed:**
 
@@ -46,7 +46,7 @@ This contains lots and lots of customizable and features built in to JS Engine, 
 - Custom Crash UI (Instead of Regular Psych Engine Crash)!
 - A nifty button in your Discord Profile!
 
-There is like lots and lots of stuff i've missed, but at least you would like those features built in **JS ENGINE**
+There is like lots and lots of stuff i've missed, but at least you would like those features built in **SHANJR ENGINE**
 
 # Screenshots and Gameplays
 
@@ -83,7 +83,7 @@ A: Report [here.](https://github.com/JordanSantiagoYT/FNF-JS-Engine/issues) Also
 
 A: Send [here.](https://github.com/JordanSantiagoYT/FNF-JS-Engine/pulls)
 
-# Compiling JS Engine
+# Compiling SHANJR Engine
 
 Refer to [the Build Instructions](./BUILDING.md)
 
@@ -93,7 +93,7 @@ If you get an error while Compiling, go [here](https://github.com/JordanSantiago
 
 if you wish to disable things like *Lua Scripts* or *Video Cutscenes*, you can read over to `Project.xml`
 
-inside `Project.xml`, you will find several variables to customize JS Engine to your liking
+inside `Project.xml`, you will find several variables to customize SHANJRE Engine to your liking
 
 to start you off, disabling Videos should be simple, simply Delete the line `"VIDEOS_ALLOWED"` or comment it out by wrapping the line in XML-like comments, like this: `<!-- YOUR_LINE_HERE -->`
 
