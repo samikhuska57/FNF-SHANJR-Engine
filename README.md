@@ -6,7 +6,7 @@
 SHANJR is a fork of **Jordan Santiago’s Engine (JS Engine)**, designed to:
 
 - **Remove Botplay Lag**  
-- **Lock a Stable 60 FPS**  
+- **Lock at a Stable 60 FPS**  
 - **Run Shader-Heavy Mods Smoothly** (like Dave and Bambi or similar)  
 - **Compete with H-Slice and JS Engine for Better Performance**  
 
@@ -32,8 +32,8 @@ _Originally, this wasn’t just for Dave and Bambi—but go ahead, use it for th
 
 ## **Note Limit Warning**
 
-⚠️ **ANJE isn’t optimized for 30k+ notes on screen (yet)**.  
-We’re working on it—but **be reasonable with your charts**.
+⚠️ **SHANJR isn’t optimized for 30k+ notes on screen (yet)**.  
+We’re working on it, but **be reasonable with your charts**.
 
 ---
 
@@ -63,7 +63,8 @@ We support **high keycounts**:
 - **18 keys?** Easy  
 - **26 keys?** Sure  
 - **105 keys?** Possible  
-- **500 keys?** If I’m crazy enough, I’ll do it
+- **500 keys?** If I’m crazy enough, I’ll do it.
+- **1000 keys?** If I'm an absolute psychopath, sure.
 
 ---
 
@@ -80,7 +81,7 @@ We support **high keycounts**:
 
 SHANJR is built to **beat H-Slice** with **less lag** and **more fun**.  
 If it breaks?  
-**I’ll fix it.**
+**I’ll try to fix it.**
 
 ---
 
@@ -95,4 +96,5 @@ Need help with:
 **Hit me up!**
 
 ---
+
 
